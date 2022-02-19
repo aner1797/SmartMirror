@@ -29,6 +29,7 @@ app.get("/", async (req, res) => {
     ufc: await getUFC(),
     space: await getSpaceX(),
     f1: await getF1(),
+    f1stand: await getF1Standing(),
   } 
 
   res.render("index.hbs", model)
@@ -300,6 +301,28 @@ async function getF1(){
   return f1
 }
 
+async function getF1Standing(){
+  var res = await urllib.request('https://www.skysports.com/f1/standings').then(function (result) {
+  return result.data
+  })
+
+  var soup = new JSSoup(res);
+  
+  var f1 = []
+
+  var data = soup.findAll("tr", {"class": "standing-table__row"})
+  var index = 0
+  for(var x of data){
+    if(index > 1){
+      var item = x.findAll("td")
+      f1.push(item[1].text.trim() + "  " + item[4].text.trim())
+    }
+    index += 1
+    if(index == 22)
+      break
+  }
+  return f1
+}
 
 
 async function fixChar(data){
