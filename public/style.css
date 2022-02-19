@@ -25,10 +25,10 @@ body{
 
 
 #box{
-  background-color: rgb(61, 92, 92);
+  background-color: #3d5c5c;
   font-size: 1vw;
   color: #ffffff;
-  padding: 1vw;
+  padding: 0.5vw;
   border-radius: 1vw;
   margin: 0.7vw;
   /* width: 20%; */

@@ -107,3 +107,17 @@
     </div>
 
 </div>
+
+<script>
+
+    // You could easily add more colors to this array.
+    var colors = ['teal', '#3d5c5c', '#4e1568', '#540d12', '#36369f', '#326e7e', '#305c23', '#5e5e33', '#8d5a2b', '#7c2525', '#468335', '#34978B', '#3893CF'];
+    var boxes = document.querySelectorAll("#box");
+
+    for (i = 0; i < boxes.length; i++) {
+    // Pick a random color from the array 'colors'.
+    boxes[i].style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    }
+
+
+</script>

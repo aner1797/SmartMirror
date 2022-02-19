@@ -29,7 +29,7 @@ app.get("/", async (req, res) => {
     ufc: await getUFC(),
     space: await getSpaceX(),
     f1: await getF1(),
-  }
+  } 
 
   res.render("index.hbs", model)
   res.status(200)
