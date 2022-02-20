@@ -61,7 +61,6 @@ li{
 .progress {
   width: 40%;
   align-self: center;
-  position: absolute;
 }
 
 @media (orientation: portrait) {
