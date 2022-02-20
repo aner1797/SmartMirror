@@ -105,6 +105,10 @@ async function getIKO(){
   
   match["name"] = soup.find("b", {"class": "pageHeaderUpcomingEvents__title"}).text.trim()
   match["time"] = soup.find("span", {"class": "pageHeaderUpcomingEvents__time"}).text.trim()
+  var tmp = new Date()
+  var str = tmp.getFullYear() + ", " + match["time"]
+  var time = new Date(str)
+  match["time"] = time.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
   match = fixChar(match)
 
   return match
@@ -134,6 +138,8 @@ async function getBrynäs(){
             i += 1
         }
         match["day"] = data.attrs["data-game-date"]
+        var day = new Date(match["day"])
+        match["day"] = day.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric' })
         match["time"] = data.find("div", {"class": "rmss_c-schedule-game__start-time"}).text
     }
   match = fixChar(match)
@@ -278,6 +284,8 @@ async function getSpaceX(){
   var data = soup.find("div", {"class": "three_fourth"})
   data = data.findAll("p")
   flight["day"] = data[0].text.trim()
+  var day = new Date(flight["day"].replace("Date:", ""))
+  flight["day"] = day.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric' })
   flight["name"] = data[1].text.trim()
   flight["time"] = data[4].text.trim()
   
