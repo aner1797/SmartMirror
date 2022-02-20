@@ -1,0 +1,109 @@
+<div class="row">
+        <div id="box">
+            <h2 id="title">AC Milan</h2>
+            <h4 id="title">NÄSTA MATCH</h4>
+            {{milan.name}}<br>
+            {{milan.league}}<br>
+            {{milan.day}}<br>
+            {{milan.time}}
+        </div>
+
+        <div id="box">
+            <h2 id="title">Liverpool FC</h2>
+            <h4 id="title">NÄSTA MATCH</h4>
+            {{lfc.name}}<br>
+            {{lfc.league}}<br>
+            {{lfc.day}}<br>
+            {{lfc.time}}
+        </div>
+
+        <div id="box">
+            <h2 id="title">IK Oddevold</h2>
+            <h4 id="title">NÄSTA MATCH</h4>
+            {{iko.name}}<br>
+            {{iko.time}}
+        </div>
+
+        <div id="box">
+            <h2 id="title">Brynäs</h2>
+            <h4 id="title">NÄSTA MATCH</h4>
+            {{brynäs.name}}<br>
+            {{brynäs.day}}<br>
+            {{brynäs.time}}
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="box">
+            <h2 id="title">Marknad</h2>
+            <h4 id="title">Index</h4>
+            {{#each market}}
+                <li>{{this}}</li>
+            {{/each}}
+        </div>
+
+        <div id="box">
+            <h2 id="title">UFC</h2>
+            <h4 id="title">NÄSTA FIGHT</h4>
+            {{#each ufc}}
+                {{this.time}}<br>
+                <u>{{this.name}}</u><br>
+            {{/each}}
+        </div>
+
+        <div id="box">
+            <h2 id="title">Space X</h2>
+            <h4 id="title">NÄSTA FLYGNING</h4>
+            {{space.name}}<br>
+            {{space.day}}<br>
+            {{space.time}} EST
+        </div>
+
+        <div id="box">
+            <h2 id="title">Formel 1</h2>
+            <h4 id="title">NÄSTA RACE</h4>
+            {{#each f1}}
+                {{this.time}}<br>
+                <u>{{this.name}}</u><br>
+            {{/each}}
+        </div>
+    </div>
+    
+
+    <div class="row">
+        <div id="box">
+            <h2 id="title">SHL</h2>
+            {{#each shl}}
+                <li>{{this}}</li>
+            {{/each}}
+        </div>
+
+        <div id="box">
+            <h2 id="title">Serie A</h2>
+            {{#each seriea}}
+                <li>{{this}}</li>
+            {{/each}}
+        </div>
+
+        <div id="box">
+            <h2 id="title">Premier League</h2>
+            {{#each pl}}
+                <li>{{this}}</li>
+            {{/each}}
+        </div>
+
+        <div id="box">
+            <h2 id="title">Div 1 Södra</h2>
+            {{#each div1}}
+                <li>{{this}}</li>
+            {{/each}}
+        </div>
+
+        <div id="box">
+            <h2 id="title">Formel 1</h2>
+            {{#each f1stand}}
+                <li>{{this}}</li>
+            {{/each}}
+        </div>
+
+    </div>

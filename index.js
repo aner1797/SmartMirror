@@ -16,6 +16,12 @@ app.use(express.json());
 
 app.get("/", async (req, res) => {
 
+  res.render("index.hbs")
+  res.status(200)
+});
+
+app.get("/data", async (req, res) => {
+
   const model = {
     milan: await getMilan(),
     lfc: await getLFC(),
@@ -32,7 +38,7 @@ app.get("/", async (req, res) => {
     f1stand: await getF1Standing(),
   } 
 
-  res.render("index.hbs", model)
+  res.render("data.hbs", model)
   res.status(200)
 });
 
