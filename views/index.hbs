@@ -85,14 +85,14 @@ class Progress {
 }
 
 
-let pb = new Progress(15, 0, 100, {parent : ".progress"});
+let pb = new Progress(0, 0, 100, {parent : ".progress"});
 
 //arg1 -> step length
 //arg2 -> time(ms)
-pb.startTo(5, 1100);
+pb.startTo(5, 1250);
 
 //end to progress after 5s
 setTimeout( () => {
   pb.end()
-}, 19000)
+}, 25000)
 </script>
