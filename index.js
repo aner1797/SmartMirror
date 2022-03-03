@@ -36,6 +36,7 @@ app.get("/data", async (req, res) => {
     space: await getSpaceX(),
     f1: await getF1(),
     f1stand: await getF1Standing(),
+    sweden: await getSweden(),
   } 
 
   res.render("data.hbs", model)
@@ -399,6 +400,42 @@ async function getF1Standing(){
   }
   return f1
 }
+
+async function getSweden(){
+  var sports = ["Fotboll","Ishockey","Handboll","Skidor","Friidrott","Innebandy"]
+  var result = []
+  for (var s of sports){
+    var res = await urllib.request('https://www.tvmatchen.nu/'+s+'/').then(function (result) {
+    return result.data
+    }).catch(function (err) {
+    return "error"
+    })
+
+    var swe = []
+    if(res != "error"){
+      var soup = new JSSoup(res);
+      var data = soup.findAll("div", {"itemtype": "http://schema.org/Event"})
+
+      var i = 1
+      for (var d of data.slice(0,30)){
+          var time = d.find("div", {"class": "match-time"}).attrs['content']
+          time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
+          var name = d.find("h3", {"itemprop": "name"}).text
+          if(!name.toLowerCase().includes("sverige"))
+            continue
+          swe.push({'time':time, 'name':s+": "+name})
+          if (i > 1)
+              break
+          i += 1
+      }
+    }
+    result = result.concat(swe)
+    if(result.length > 1)
+      break
+  }
+  return result.slice(0,2)
+}
+
 
 
 async function fixChar(data){

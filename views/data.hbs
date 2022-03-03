@@ -31,6 +31,15 @@
             {{brynäs.day}}<br>
             {{brynäs.time}}
         </div>
+
+        <div id="box">
+            <h2 id="title">Sverige</h2>
+            <h4 id="title">NÄSTA MATCH</h4>
+            {{#each sweden}}
+                {{this.time}}<br>
+                <u>{{this.name}}</u><br>
+            {{/each}}
+        </div>
     </div>
 
     <div class="row">
