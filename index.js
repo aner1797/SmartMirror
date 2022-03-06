@@ -309,6 +309,9 @@ async function getUFC(){
         var time = d.find("div", {"class": "match-time"}).attrs['content']
         time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
         var name = d.find("h3", {"itemprop": "name"}).text
+        var tmp = new Date(time).setYear(new Date().getFullYear())
+        if(new Date(tmp).getTime() < new Date().getTime())
+          continue
         ufc.push({'time':time, 'name':name})
         if (i > 1)
             break
@@ -421,7 +424,8 @@ async function getSweden(){
           var time = d.find("div", {"class": "match-time"}).attrs['content']
           time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
           var name = d.find("h3", {"itemprop": "name"}).text
-          if(!name.toLowerCase().includes("sverige"))
+          var tmp = new Date(time).setYear(new Date().getFullYear())
+          if(!name.toLowerCase().includes("sverige") || new Date(tmp).getTime() < new Date().getTime())
             continue
           swe.push({'time':time, 'name':s+": "+name})
           if (i > 1)
