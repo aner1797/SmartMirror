@@ -66,6 +66,9 @@ async function getMilan(){
     var data1 = data.findAll("span", {"class": "swap-text--bp30"})
     match["name"] = data1[0].text.trim() +" - "+ data1[1].text.trim()
     match["time"] = data.find("span", {"class": "matches__date"}).text.trim()
+    var tmp = match["time"].slice(0,2)
+    tmp = parseInt(tmp) + 1
+    match["time"] = tmp + match["time"].slice(2)
     match = fixChar(match)
   }
 
@@ -95,6 +98,9 @@ async function getLFC(){
     var data1 = data.findAll("span", {"class": "swap-text--bp30"})
     match["name"] = data1[0].text.trim() +" - "+ data1[1].text.trim()
     match["time"] = data.find("span", {"class": "matches__date"}).text.trim()
+    var tmp = match["time"].slice(0,2)
+    tmp = parseInt(tmp) + 1
+    match["time"] = tmp + match["time"].slice(2)
     match = fixChar(match)
   }
 
