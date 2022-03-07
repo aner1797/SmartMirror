@@ -54,7 +54,8 @@ async function getMilan(){
       "name": "",
       "league": "",
       "day": "",
-      "time": ""
+      "time": "",
+      "today": ""
   }
   if(res != "error"){
     var soup = new JSSoup(res);
@@ -69,6 +70,8 @@ async function getMilan(){
     var tmp = match["time"].slice(0,2)
     tmp = parseInt(tmp) + 1
     match["time"] = tmp + match["time"].slice(2)
+    if(parseInt(match["day"].split(" ")[1]) == new Date().getDate())
+      match["today"] = "1"
     match = fixChar(match)
   }
 
@@ -86,7 +89,8 @@ async function getLFC(){
       "name": "",
       "league": "",
       "day": "",
-      "time": ""
+      "time": "",
+      "today": ""
   }
   if(res != "error"){
     var soup = new JSSoup(res);
@@ -101,6 +105,8 @@ async function getLFC(){
     var tmp = match["time"].slice(0,2)
     tmp = parseInt(tmp) + 1
     match["time"] = tmp + match["time"].slice(2)
+    if(parseInt(match["day"].split(" ")[1]) == new Date().getDate())
+      match["today"] = "1"
     match = fixChar(match)
   }
 
@@ -116,7 +122,8 @@ async function getIKO(){
 
   var match = {
       "name": "",
-      "time": ""
+      "time": "",
+      "today": ""
   }
   if(res != "error"){
     var soup = new JSSoup(res);
@@ -127,6 +134,8 @@ async function getIKO(){
     var str = tmp.getFullYear() + ", " + match["time"]
     var time = new Date(str)
     match["time"] = time.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
+    if(time.getDate() == new Date().getDate())
+      match["today"] = "1"
     match = fixChar(match)
   }
 
@@ -143,7 +152,8 @@ async function getBrynäs(){
   var match = {
       "name": "",
       "day": "",
-      "time": ""
+      "time": "",
+      "today": ""
   }
   if(res != "error"){
     var soup = new JSSoup(res);
@@ -163,6 +173,8 @@ async function getBrynäs(){
           var day = new Date(match["day"])
           match["day"] = day.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric' })
           match["time"] = data.find("div", {"class": "rmss_c-schedule-game__start-time"}).text
+          if(day.getDate() == new Date().getDate())
+            match["today"] = "1"
       }
     match = fixChar(match)
   }
@@ -318,7 +330,10 @@ async function getUFC(){
         var tmp = new Date(time).setYear(new Date().getFullYear())
         if(new Date(tmp).getTime() < new Date().getTime())
           continue
-        ufc.push({'time':time, 'name':name})
+        if(new Date(tmp).getDate() == new Date().getDate())
+          ufc.push({'time':time, 'name':name, 'today': "1"})
+        else
+          ufc.push({'time':time, 'name':name, 'today': ""})
         if (i > 1)
             break
         i += 1
@@ -339,6 +354,7 @@ async function getSpaceX(){
       "name": "",
       "day": "",
       "time": "",
+      "today": ""
   }
   if(res != "error"){
     var soup = new JSSoup(res);
@@ -351,6 +367,8 @@ async function getSpaceX(){
     flight["day"] = day.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric' })
     flight["name"] = data[1].text.trim()
     flight["time"] = data[4].text.trim()
+    if(day.getDate() == new Date().getDate())
+      flight["today"] = "1"
   }
   
   return flight
@@ -374,7 +392,10 @@ async function getF1(){
         var time = d.find("div", {"class": "match-time"}).attrs['content']
         time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
         var name = d.find("h3", {"itemprop": "name"}).text
-        f1.push({'time':time, 'name':name})
+        if(new Date(time).getDate() == new Date().getDate())
+          f1.push({'time':time, 'name':name, 'today': "1"})
+        else
+          f1.push({'time':time, 'name':name, 'today': ""})
         if (i > 1)
             break
         i += 1
@@ -433,7 +454,10 @@ async function getSweden(){
           var tmp = new Date(time).setYear(new Date().getFullYear())
           if(!name.toLowerCase().includes("sverige") || new Date(tmp).getTime() < new Date().getTime())
             continue
-          swe.push({'time':time, 'name':s+": "+name})
+          if(new Date(tmp).getDate() == new Date().getDate())
+            swe.push({'time':time, 'name':s+": "+name, 'today': "1"})
+          else
+            swe.push({'time':time, 'name':s+": "+name, 'today': ""})
           if (i > 1)
               break
           i += 1
