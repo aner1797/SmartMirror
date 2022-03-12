@@ -392,6 +392,8 @@ async function getF1(){
         var time = d.find("div", {"class": "match-time"}).attrs['content']
         time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
         var name = d.find("h3", {"itemprop": "name"}).text
+        if(new Date(time).getTime() < new Date().getTime())
+          continue
         if(new Date(time).getDate() == new Date().getDate())
           f1.push({'time':time, 'name':name, 'today': "1"})
         else
