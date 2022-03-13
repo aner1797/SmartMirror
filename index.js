@@ -37,6 +37,7 @@ app.get("/data", async (req, res) => {
     f1: await getF1(),
     f1stand: await getF1Standing(),
     sweden: await getSweden(),
+    tv: await getTV(),
   } 
 
   res.render("data.hbs", model)
@@ -471,6 +472,37 @@ async function getSweden(){
       break
   }
   return result.slice(0,2)
+}
+
+async function getTV(){
+  var tv = ["SVT1", "SVT2", "TV3", "TV4", "Kanal-5"]
+  var result = []
+  for (var s of tv){
+    var res = await urllib.request('https://www.tv.nu/kanal/'+s).then(function (result) {
+    return result.data
+    }).catch(function (err) {
+    return "error"
+    })
+
+    var tvRes = {"ch":s, "content": []}
+    if(res != "error"){
+      var soup = new JSSoup(res);
+      var data = soup.findAll("li", {"class": "js-channel-broadcast"})
+      
+      for (var d of data){
+          var time = d.find("time").attrs['dateTime']
+          time = new Date(time)
+          if(time.getHours() == 20 && time.getMinutes() == 0){
+            tvRes["content"].push("20: " + d.find("div", {"class": "_2WsKj"}).contents[1]._text)
+          }
+          if(time.getHours() == 21 && time.getMinutes() == 0){
+            tvRes["content"].push("21: " + d.find("div", {"class": "_2WsKj"}).contents[1]._text)
+          }
+      }
+    }
+    result.push(tvRes)
+  }
+  return result
 }
 
 

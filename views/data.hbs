@@ -76,6 +76,16 @@
                 <u>{{this.name}}</u><br>
             {{/each}}
         </div>
+
+        {{!-- <div id="box" style="border: thick dashed red;">
+            <h2 id="title">TV Idag</h2>
+            {{#each tv}}
+                <u>{{this.ch}}</u><br>
+                {{#each this.content}}
+                    {{this}}<br>
+                {{/each}}
+            {{/each}}
+        </div> --}}
     </div>
     
 
@@ -112,6 +122,16 @@
             <h2 id="title">Formel 1</h2>
             {{#each f1stand}}
                 <li>{{this}}</li>
+            {{/each}}
+        </div>
+
+        <div id="box" style="border: thick dashed red;">
+            <h2 id="title">TV IDAG</h2>
+            {{#each tv}}
+                <h4 id="title">{{this.ch}}</h4>
+                {{#each this.content}}
+                    {{this}}<br>
+                {{/each}}
             {{/each}}
         </div>
 
