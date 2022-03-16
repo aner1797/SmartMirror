@@ -487,17 +487,25 @@ async function getTV(){
     var tvRes = {"ch":s, "content": []}
     if(res != "error"){
       var soup = new JSSoup(res);
-      var data = soup.findAll("li", {"class": "js-channel-broadcast"})
+      //var data = soup.findAll("li", {"class": "js-channel-broadcast"})
+      var data = soup.findAll("li", {"class": "_37xCg"})
       
+      var tmp = []
       for (var d of data){
           var time = d.find("time").attrs['dateTime']
           time = new Date(time)
           if(time.getHours() == 20 && time.getMinutes() == 0){
-            tvRes["content"].push("20: " + d.find("div", {"class": "_2WsKj"}).contents[1]._text)
+            tvRes["content"].push("20.00: " + d.find("div", {"class": "_2WsKj"}).contents[1]._text.replace(/&#x27;/gi, "'"))
           }
           if(time.getHours() == 21 && time.getMinutes() == 0){
-            tvRes["content"].push("21: " + d.find("div", {"class": "_2WsKj"}).contents[1]._text)
+            tvRes["content"].push("21.00: " + d.find("div", {"class": "_2WsKj"}).contents[1]._text.replace(/&#x27;/gi, "'"))
           }
+          if(tmp.length < 2){
+            tmp.push((time.getHours() + "." + time.getMinutes() + ": " + d.find("div", {"class": "_2WsKj"}).contents[1]._text).replace(/&#x27;/gi, "'").replace(".0:", ".00:"))
+          }
+      }
+      if(tvRes["content"].length < 1){
+        tvRes["content"] = tmp
       }
     }
     result.push(tvRes)
