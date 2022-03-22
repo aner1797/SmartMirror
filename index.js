@@ -447,21 +447,33 @@ async function getSweden(){
 
     var swe = []
     if(res != "error"){
+      if(s == "Skidor")
+        s = "Vinter"
       var soup = new JSSoup(res);
-      var data = soup.findAll("div", {"itemtype": "http://schema.org/Event"})
+      //var data = soup.findAll("div", {"itemtype": "http://schema.org/Event"})
+      var data = soup.findAll("div", {"class": "match-detail"})
 
       var i = 1
       for (var d of data.slice(0,30)){
+          d = d.parent
           var time = d.find("div", {"class": "match-time"}).attrs['content']
-          time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
-          var name = d.find("h3", {"itemprop": "name"}).text
-          var tmp = new Date(time).setYear(new Date().getFullYear())
-          if(!name.toLowerCase().includes("sverige") || new Date(tmp).getTime() < new Date().getTime())
-            continue
-          if(new Date(tmp).getDate() == new Date().getDate())
+          var name = d.find("h3").text
+          
+          if(typeof time == 'undefined' && name.toLowerCase().includes("sverige")){
+            time = d.find("div", {"class": "match-time"}).text
+            time = time + ' - ' + d.parent.previousElement.parent.previousElement._text
             swe.push({'time':time, 'name':s+": "+name, 'today': "1"})
-          else
-            swe.push({'time':time, 'name':s+": "+name, 'today': ""})
+          }else{
+            time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
+            var tmp = new Date(time).setYear(new Date().getFullYear())
+            if(!name.toLowerCase().includes("sverige") || new Date(tmp).getTime() < new Date().getTime())
+              continue
+            if(new Date(tmp).getDate() == new Date().getDate())
+              swe.push({'time':time, 'name':s+": "+name, 'today': "1"})
+            else
+              swe.push({'time':time, 'name':s+": "+name, 'today': ""})
+          }
+
           if (i > 1)
               break
           i += 1
