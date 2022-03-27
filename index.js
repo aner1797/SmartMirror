@@ -158,25 +158,37 @@ async function getBrynäs(){
   }
   if(res != "error"){
     var soup = new JSSoup(res);
-    
     var data = soup.find("div", {"data-game-mode": "upcoming"})
-      if (data != 'None' && typeof data != 'undefined'){
-          var tmp = data.findAll("div", {"class": "rmss_c-schedule-game__team-name"})
-          var i = 0
-          for (var x of tmp){
-              if (i==0)
-                  match["name"] = x.text + "-"
-              if (i==2)
-                  match["name"] += x.text
-              i += 1
-          }
-          match["day"] = data.attrs["data-game-date"]
-          var day = new Date(match["day"])
-          match["day"] = day.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric' })
-          match["time"] = data.find("div", {"class": "rmss_c-schedule-game__start-time"}).text
-          if(day.getDate() == new Date().getDate())
-            match["today"] = "1"
-      }
+
+    if (data == 'None' || typeof data == 'undefined'){
+      res = await urllib.request('https://www.brynas.se/spelschema/SHL_2021_playoff').then(function (result) {
+      return result.data
+      }).catch(function (err) {
+      return "error"
+      })
+      
+      soup = new JSSoup(res);
+      data = soup.find("div", {"data-game-mode": "upcoming"})
+    }
+
+
+    if (data != 'None' && typeof data != 'undefined'){
+        var tmp = data.findAll("div", {"class": "rmss_c-schedule-game__team-name"})
+        var i = 0
+        for (var x of tmp){
+            if (i==0)
+                match["name"] = x.text + "-"
+            if (i==2)
+                match["name"] += x.text
+            i += 1
+        }
+        match["day"] = data.attrs["data-game-date"]
+        var day = new Date(match["day"])
+        match["day"] = day.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric' })
+        match["time"] = data.find("div", {"class": "rmss_c-schedule-game__start-time"}).text
+        if(day.getDate() == new Date().getDate())
+          match["today"] = "1"
+    }
     match = fixChar(match)
   }
 
