@@ -160,7 +160,7 @@ async function getBrynäs(){
     var soup = new JSSoup(res);
     
     var data = soup.find("div", {"data-game-mode": "upcoming"})
-      if (data != 'None'){
+      if (data != 'None' && typeof data != 'undefined'){
           var tmp = data.findAll("div", {"class": "rmss_c-schedule-game__team-name"})
           var i = 0
           for (var x of tmp){
