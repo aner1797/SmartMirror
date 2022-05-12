@@ -133,7 +133,7 @@ async function getIKO(){
     match["time"] = soup.find("span", {"class": "pageHeaderUpcomingEvents__time"}).text.trim()
     var tmp = new Date()
     var str = tmp.getFullYear() + ", " + match["time"]
-    var time = new Date(str)
+    var time = new Date(str.replace("maj", "may").replace("okt", "oct"))
     match["time"] = time.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
     if(time.getDate() == new Date().getDate())
       match["today"] = "1"
@@ -144,7 +144,7 @@ async function getIKO(){
 }
 
 async function getBrynäs(){
-  var res = await urllib.request('https://www.brynas.se/spelschema/SHL_2021_regular').then(function (result) {
+  var res = await urllib.request('https://www.brynas.se/spelschema/SHL_2022_regular').then(function (result) {
   return result.data
   }).catch(function (err) {
   return "error"
@@ -161,7 +161,7 @@ async function getBrynäs(){
     var data = soup.find("div", {"data-game-mode": "upcoming"})
 
     if (data == 'None' || typeof data == 'undefined'){
-      res = await urllib.request('https://www.brynas.se/spelschema/SHL_2021_playoff').then(function (result) {
+      res = await urllib.request('https://www.brynas.se/spelschema/SHL_2022_playoff').then(function (result) {
       return result.data
       }).catch(function (err) {
       return "error"
