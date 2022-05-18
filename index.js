@@ -15,7 +15,7 @@ app.use(express.json());
 
 
 app.get("/", async (req, res) => {
-
+  
   res.render("index.hbs")
   res.status(200)
 });
@@ -471,19 +471,22 @@ async function getSweden(){
           var time = d.find("div", {"class": "match-time"}).attrs['content']
           var name = d.find("h3").text
           
-          if(typeof time == 'undefined' && name.toLowerCase().includes("sverige")){
+          if(name.toLowerCase().includes("sverige")){
+            var d1 = new Date().getDate()-1
+            var d2 = new Date().getDate()-2
             time = d.find("div", {"class": "match-time"}).text
             time = time + ' - ' + d.parent.previousElement.parent.previousElement._text
-            swe.push({'time':time, 'name':s+": "+name, 'today': "1"})
-          }else{
-            time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
-            var tmp = new Date(time).setYear(new Date().getFullYear())
-            if(!name.toLowerCase().includes("sverige") || new Date(tmp).getTime() < new Date().getTime())
+            if(time.split(' ')[2].includes(d1) || time.split(' ')[2].includes(d2)){
               continue
-            if(new Date(tmp).getDate() == new Date().getDate())
+            }
+
+            if(time.split(' ')[2].includes(d1+1)){
               swe.push({'time':time, 'name':s+": "+name, 'today': "1"})
-            else
+            }else{
               swe.push({'time':time, 'name':s+": "+name, 'today': ""})
+            }
+          }else{
+            continue
           }
 
           if (i > 1)
