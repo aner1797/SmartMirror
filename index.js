@@ -346,7 +346,7 @@ async function getUFC(){
 
         if(time.split(' ')[1].includes(d1) || time.split(' ')[1].includes(d2))
           continue
-        if(new Date(tmp).getDate() == new Date().getDate())
+        if(time.split(' ')[1].includes(d1+1))
           ufc.push({'time':time, 'name':name, 'today': "1"})
         else
           ufc.push({'time':time, 'name':name, 'today': ""})
@@ -416,7 +416,7 @@ async function getF1(){
 
         if(time.split(' ')[1].includes(d1) || time.split(' ')[1].includes(d2))
           continue
-        if(new Date(time).getDate() == new Date().getDate())
+        if(time.split(' ')[1].includes(d1+1))
           f1.push({'time':time, 'name':name, 'today': "1"})
         else
           f1.push({'time':time, 'name':name, 'today': ""})
