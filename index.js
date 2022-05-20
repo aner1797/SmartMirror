@@ -15,7 +15,7 @@ app.use(express.json());
 
 
 app.get("/", async (req, res) => {
-  
+  await getF1()
   res.render("index.hbs")
   res.status(200)
 });
@@ -333,6 +333,8 @@ async function getUFC(){
   if(res != "error"){
     var soup = new JSSoup(res);
     var data = soup.findAll("div", {"itemtype": "http://schema.org/Event"})
+    var d1 = new Date().getDate()-1
+    var d2 = new Date().getDate()-2
 
 
     var i = 1
@@ -341,7 +343,8 @@ async function getUFC(){
         time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
         var name = d.find("h3", {"itemprop": "name"}).text
         var tmp = new Date(time).setYear(new Date().getFullYear())
-        if(new Date(tmp).getTime() < new Date().getTime())
+
+        if(time.split(' ')[1].includes(d1) || time.split(' ')[1].includes(d2))
           continue
         if(new Date(tmp).getDate() == new Date().getDate())
           ufc.push({'time':time, 'name':name, 'today': "1"})
@@ -374,14 +377,16 @@ async function getSpaceX(){
 
 
     var data = soup.find("div", {"class": "three_fourth"})
-    data = data.findAll("p")
-    flight["day"] = data[0].text.trim()
-    var day = new Date(flight["day"].replace("Date:", ""))
-    flight["day"] = day.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric' })
-    flight["name"] = data[1].text.trim()
-    flight["time"] = data[4].text.trim()
-    if(day.getDate() == new Date().getDate())
-      flight["today"] = "1"
+    if(data){
+      data = data.findAll("p")
+      flight["day"] = data[0].text.trim()
+      var day = new Date(flight["day"].replace("Date:", ""))
+      flight["day"] = day.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric' })
+      flight["name"] = data[1].text.trim()
+      flight["time"] = data[4].text.trim()
+      if(day.getDate() == new Date().getDate())
+        flight["today"] = "1"
+    }
   }
   
   return flight
@@ -398,6 +403,8 @@ async function getF1(){
   if(res != "error"){
     var soup = new JSSoup(res);
     var data = soup.findAll("div", {"itemtype": "http://schema.org/Event"})
+    var d1 = new Date().getDate()-1
+    var d2 = new Date().getDate()-2
 
 
     var i = 1
@@ -406,7 +413,8 @@ async function getF1(){
         time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
         var name = d.find("h3", {"itemprop": "name"}).text
         var tmp = new Date(time).setYear(new Date().getFullYear())
-        if(new Date(tmp).getTime() < new Date().getTime())
+
+        if(time.split(' ')[1].includes(d1) || time.split(' ')[1].includes(d2))
           continue
         if(new Date(time).getDate() == new Date().getDate())
           f1.push({'time':time, 'name':name, 'today': "1"})
