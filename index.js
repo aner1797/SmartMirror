@@ -61,19 +61,22 @@ async function getMilan(){
   if(res != "error"){
     var soup = new JSSoup(res);
 
-    var result = soup.find("h4", {"class": "fixres__header2"}).text
-    match["day"] = soup.find("h4", {"class": "fixres__header2"}).text
-    match["league"] = soup.find("h5", {"class": "fixres__header3"}).text
-    var data = soup.find("div", {"class": "fixres__item"})
-    var data1 = data.findAll("span", {"class": "swap-text--bp30"})
-    match["name"] = data1[0].text.trim() +" - "+ data1[1].text.trim()
-    match["time"] = data.find("span", {"class": "matches__date"}).text.trim()
-    var tmp = match["time"].slice(0,2)
-    tmp = parseInt(tmp) + 1
-    match["time"] = tmp + match["time"].slice(2)
-    if(parseInt(match["day"].split(" ")[1]) == new Date().getDate())
-      match["today"] = "1"
-    match = fixChar(match)
+    if(soup.find("h4", {"class": "fixres__header2"})){
+      var result = soup.find("h4", {"class": "fixres__header2"}).text
+      match["day"] = soup.find("h4", {"class": "fixres__header2"}).text
+      match["league"] = soup.find("h5", {"class": "fixres__header3"}).text
+      var data = soup.find("div", {"class": "fixres__item"})
+      var data1 = data.findAll("span", {"class": "swap-text--bp30"})
+      match["name"] = data1[0].text.trim() +" - "+ data1[1].text.trim()
+      match["time"] = data.find("span", {"class": "matches__date"}).text.trim()
+      var tmp = match["time"].slice(0,2)
+      tmp = parseInt(tmp) + 1
+      match["time"] = tmp + match["time"].slice(2)
+      if(parseInt(match["day"].split(" ")[1]) == new Date().getDate())
+        match["today"] = "1"
+      match = fixChar(match)
+    }
+
   }
 
   return match
@@ -96,19 +99,22 @@ async function getLFC(){
   if(res != "error"){
     var soup = new JSSoup(res);
 
-    var result = soup.find("h4", {"class": "fixres__header2"}).text
-    match["day"] = soup.find("h4", {"class": "fixres__header2"}).text
-    match["league"] = soup.find("h5", {"class": "fixres__header3"}).text
-    var data = soup.find("div", {"class": "fixres__item"})
-    var data1 = data.findAll("span", {"class": "swap-text--bp30"})
-    match["name"] = data1[0].text.trim() +" - "+ data1[1].text.trim()
-    match["time"] = data.find("span", {"class": "matches__date"}).text.trim()
-    var tmp = match["time"].slice(0,2)
-    tmp = parseInt(tmp) + 1
-    match["time"] = tmp + match["time"].slice(2)
-    if(parseInt(match["day"].split(" ")[1]) == new Date().getDate())
-      match["today"] = "1"
-    match = fixChar(match)
+    if(soup.find("h4", {"class": "fixres__header2"})){
+      var result = soup.find("h4", {"class": "fixres__header2"}).text
+      match["day"] = soup.find("h4", {"class": "fixres__header2"}).text
+      match["league"] = soup.find("h5", {"class": "fixres__header3"}).text
+      var data = soup.find("div", {"class": "fixres__item"})
+      var data1 = data.findAll("span", {"class": "swap-text--bp30"})
+      match["name"] = data1[0].text.trim() +" - "+ data1[1].text.trim()
+      match["time"] = data.find("span", {"class": "matches__date"}).text.trim()
+      var tmp = match["time"].slice(0,2)
+      tmp = parseInt(tmp) + 1
+      match["time"] = tmp + match["time"].slice(2)
+      if(parseInt(match["day"].split(" ")[1]) == new Date().getDate())
+        match["today"] = "1"
+      match = fixChar(match)
+    }
+
   }
 
   return match
@@ -346,7 +352,7 @@ async function getUFC(){
 
         if(time.split(' ')[1].includes(d1) || time.split(' ')[1].includes(d2))
           continue
-        if(time.split(' ')[1].includes(d1+1))
+        if(time.split(' ')[1].includes(d1+1) || time.split(' ')[1].includes("Idag"))
           ufc.push({'time':time, 'name':name, 'today': "1"})
         else
           ufc.push({'time':time, 'name':name, 'today': ""})
@@ -416,7 +422,7 @@ async function getF1(){
 
         if(time.split(' ')[1].includes(d1) || time.split(' ')[1].includes(d2))
           continue
-        if(time.split(' ')[1].includes(d1+1))
+        if(time.split(' ')[1].includes(d1+1) || time.split(' ')[1].includes("Idag"))
           f1.push({'time':time, 'name':name, 'today': "1"})
         else
           f1.push({'time':time, 'name':name, 'today': ""})
@@ -488,7 +494,7 @@ async function getSweden(){
               continue
             }
 
-            if(time.split(' ')[2].includes(d1+1)){
+            if(time.split(' ')[2].includes(d1+1) || time.split(' ')[1].includes("Idag")){
               swe.push({'time':time, 'name':s+": "+name, 'today': "1"})
             }else{
               swe.push({'time':time, 'name':s+": "+name, 'today': ""})
