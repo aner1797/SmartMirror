@@ -329,7 +329,7 @@ async function getMarket(){
 }
 
 async function getUFC(){
-  var res = await urllib.request('https://www.tvmatchen.nu/fotboll/').then(function (result) {
+  var res = await urllib.request('https://www.tvmatchen.nu/fighting/').then(function (result) {
   return result.data
   }).catch(function (err) {
   return "error"
