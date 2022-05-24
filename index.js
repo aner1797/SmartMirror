@@ -329,7 +329,7 @@ async function getMarket(){
 }
 
 async function getUFC(){
-  var res = await urllib.request('https://www.tvmatchen.nu/fighting/').then(function (result) {
+  var res = await urllib.request('https://www.tvmatchen.nu/fotboll/').then(function (result) {
   return result.data
   }).catch(function (err) {
   return "error"
@@ -352,7 +352,7 @@ async function getUFC(){
 
         if(time.split(' ')[1].includes(d1) || time.split(' ')[1].includes(d2))
           continue
-        if(time.split(' ')[1].includes(d1+1) || time.split(' ')[1].includes("Idag"))
+        if(time.split(' ')[1].includes(d1+1) || time.split(' ').includes("Idag,"))
           ufc.push({'time':time, 'name':name, 'today': "1"})
         else
           ufc.push({'time':time, 'name':name, 'today': ""})
@@ -422,7 +422,7 @@ async function getF1(){
 
         if(time.split(' ')[1].includes(d1) || time.split(' ')[1].includes(d2))
           continue
-        if(time.split(' ')[1].includes(d1+1) || time.split(' ')[1].includes("Idag"))
+        if(time.split(' ')[1].includes(d1+1) || time.split(' ').includes("Idag,"))
           f1.push({'time':time, 'name':name, 'today': "1"})
         else
           f1.push({'time':time, 'name':name, 'today': ""})
@@ -493,8 +493,7 @@ async function getSweden(){
             if(time.split(' ')[2].includes(d1) || time.split(' ')[2].includes(d2)){
               continue
             }
-
-            if(time.split(' ')[2].includes(d1+1) || time.split(' ')[1].includes("Idag")){
+            if(time.split(' ')[2].includes(d1+1) || time.split(' ').includes("Idag,")){
               swe.push({'time':time, 'name':s+": "+name, 'today': "1"})
             }else{
               swe.push({'time':time, 'name':s+": "+name, 'today': ""})
