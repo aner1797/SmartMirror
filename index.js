@@ -213,12 +213,8 @@ async function getSHL(){
     var soup = new JSSoup(res);
 
     var table = soup.findAll("table", {"class": "table"})
-    var index = 0
-    for (var d of table[0].contents){
-      if(index != 0){
-        serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[8].text)
-      }
-      index += 1
+    for (var d of table[0].contents[1].contents){
+      serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[8].text)
     }
   }
 
@@ -237,12 +233,8 @@ async function getSerieA(){
     var soup = new JSSoup(res);
 
     var table = soup.findAll("table", {"class": "table"})
-    var index = 0
-    for (var d of table[0].contents){
-      if(index != 0){
-        serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[7].text)
-      }
-      index += 1
+    for (var d of table[0].contents[1].contents){
+      serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[7].text)
     }
   }
   return serie
@@ -260,12 +252,8 @@ async function getPL(){
     var soup = new JSSoup(res);
 
     var table = soup.findAll("table", {"class": "table"})
-    var index = 0
-    for (var d of table[0].contents){
-      if(index != 0){
-        serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[7].text)
-      }
-      index += 1
+    for (var d of table[0].contents[1].contents){
+      serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[7].text)
     }
   }
   return serie
@@ -283,12 +271,8 @@ async function getDIV1(){
     var soup = new JSSoup(res);
 
     var table = soup.findAll("table", {"class": "table"})
-    var index = 0
-    for (var d of table[0].contents){
-      if(index != 0){
-        serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[7].text)
-      }
-      index += 1
+    for (var d of table[0].contents[1].contents){
+      serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[7].text)
     }
   }
   return serie
