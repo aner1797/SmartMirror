@@ -446,7 +446,7 @@ async function getF1Standing(){
 }
 
 async function getSweden(){
-  var sports = ["Fotboll","Ishockey","Handboll","Skidor","Friidrott","Innebandy"]
+  var sports = ["Fotboll","Ishockey","Skidor","Handboll","Friidrott","Innebandy"]
   var result = []
   for (var s of sports){
     var res = await urllib.request('https://www.tvmatchen.nu/'+s+'/').then(function (result) {
@@ -463,22 +463,27 @@ async function getSweden(){
       //var data = soup.findAll("div", {"itemtype": "http://schema.org/Event"})
       var data = soup.findAll("div", {"class": "match-detail"})
 
+
       var i = 1
       for (var d of data.slice(0,30)){
           d = d.parent
           var time = d.find("div", {"class": "match-time"}).attrs['content']
           var name = d.find("h3").text
           
-          if(name.toLowerCase().includes("sverige")){
+          if(name.toLowerCase().includes("sverige") || s == "Vinter"){
             var d1 = new Date().getDate()-1
             var d2 = new Date().getDate()-2
             time = d.find("div", {"class": "match-time"}).text
             time = time + ' - ' + d.parent.previousElement.parent.previousElement._text
+
             if(time.split(' ')[2].includes(d1) || time.split(' ')[2].includes(d2)){
               continue
             }
             if(time.split(' ')[2].includes(d1+1) || time.split(' ').includes("Idag,")){
-              swe.push({'time':time, 'name':s+": "+name, 'today': "1"})
+              if(!(new Date().getHours() > time.slice(0,2)))
+                swe.push({'time':time, 'name':s+": "+name, 'today': "1"})
+              else
+                continue
             }else{
               swe.push({'time':time, 'name':s+": "+name, 'today': ""})
             }
