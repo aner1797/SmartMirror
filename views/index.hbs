@@ -89,10 +89,10 @@ let pb = new Progress(0, 0, 100, {parent : ".progress"});
 
 //arg1 -> step length
 //arg2 -> time(ms)
-pb.startTo(5, 1250);
+pb.startTo(5, 3000);
 
 //end to progress after 5s
 setTimeout( () => {
   pb.end()
-}, 25000)
+}, 60000)
 </script>

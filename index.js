@@ -134,16 +134,20 @@ async function getIKO(){
   }
   if(res != "error"){
     var soup = new JSSoup(res);
+
+    if(soup.find("b", {"class": "pageHeaderUpcomingEvents__title"})){
+
+      match["name"] = soup.find("b", {"class": "pageHeaderUpcomingEvents__title"}).text.trim()
+      match["time"] = soup.find("span", {"class": "pageHeaderUpcomingEvents__time"}).text.trim()
+      var tmp = new Date()
+      var str = tmp.getFullYear() + ", " + match["time"]
+      var time = new Date(str.replace("maj", "may").replace("okt", "oct"))
+      match["time"] = time.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
+      if(time.getDate() == new Date().getDate())
+        match["today"] = "1"
+      match = fixChar(match)
+    }
     
-    match["name"] = soup.find("b", {"class": "pageHeaderUpcomingEvents__title"}).text.trim()
-    match["time"] = soup.find("span", {"class": "pageHeaderUpcomingEvents__time"}).text.trim()
-    var tmp = new Date()
-    var str = tmp.getFullYear() + ", " + match["time"]
-    var time = new Date(str.replace("maj", "may").replace("okt", "oct"))
-    match["time"] = time.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
-    if(time.getDate() == new Date().getDate())
-      match["today"] = "1"
-    match = fixChar(match)
   }
 
   return match
