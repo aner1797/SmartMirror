@@ -15,7 +15,6 @@ app.use(express.json());
 
 
 app.get("/", async (req, res) => {
-  await getF1()
   res.render("index.hbs")
   res.status(200)
 });
