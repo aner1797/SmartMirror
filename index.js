@@ -15,27 +15,108 @@ app.use(express.json());
 
 
 app.get("/", async (req, res) => {
-  res.render("index.hbs")
+  const jsonData = require("./public/data.json")
+  res.render("index.hbs", jsonData)
   res.status(200)
 });
 
-app.get("/data", async (req, res) => {
+
+app.post("/data", async (req, res) => {
+  /* console.log(req.body) */
+  const jsonData = require("./public/data.json")
+  var list = req.body.list
+  var teams = []
+  var others = []
+  var leagues = []
+  var country = {}
+  var markets = []
+
+  if(list.length == 18){
+    for(var item of list){
+
+      for(var data of jsonData["teams"]){
+        if(data[0] == item){
+          switch (data[2]) {
+            case "InterFootball":
+              var tmp = await getInterFootballTeam(data[1])
+              tmp["header"] = data[0]
+              teams.push(tmp)
+              break;
+            case "SportOther":
+              var tmp = await getOtherTeam(data[1], data[0])
+              tmp["header"] = data[0]
+              teams.push(tmp)
+              break;
+            default:
+              break;
+          }
+        }
+      }
+
+      for(var data of jsonData["leagues"]){
+        if(data[0] == item){
+          switch (data[2]) {
+            case "InterFootball":
+              var mod = {
+                league: await getInterFootballLeague(data[1]),
+                header: data[0]
+              }
+              leagues.push(mod)
+              break;
+            case "Hockey":
+              var mod = {
+                league: await getInterHockeyLeague(data[1]),
+                header: data[0]
+              }
+              leagues.push(mod)
+              break;
+            case "Racing":
+              var mod = {
+                league: await getRacingLeague(data[1]),
+                header: data[0]
+              }
+              leagues.push(mod)
+              break;
+            default:
+              break;
+          }
+        }
+      }
+
+      for(var data of jsonData["country"]){
+        if(data[0] == item){
+          var mod = {
+            country: await getCountry(data[0]),
+            header: data[0]
+          }
+          country = mod
+        }
+      }
+
+      for(var data of jsonData["other"]){
+        if(data[0] == item){
+          var mod = {
+            other: await getOtherSport(data[0]),
+            header: data[0]
+          }
+          others.push(mod)
+        }
+      }
+
+      for(var data of jsonData["markets"]){
+        if(data[0] == item){
+          markets.push(await getMarket(data[0], data[1]))
+        }
+      }
+    }
+  }
 
   const model = {
-    milan: await getMilan(),
-    lfc: await getLFC(),
-    iko: await getIKO(),
-    brynäs: await getBrynäs(),
-    shl: await getSHL(),
-    seriea: await getSerieA(),
-    pl: await getPL(),
-    div1: await getDIV1(),
-    market: await getMarket(),
-    ufc: await getUFC(),
-    space: await getSpaceX(),
-    f1: await getF1(),
-    f1stand: await getF1Standing(),
-    sweden: await getSweden(),
+    teams: teams,
+    leagues: leagues,
+    others: others,
+    country: country,
+    markets: markets,
     tv: await getTV(),
   } 
 
@@ -43,8 +124,8 @@ app.get("/data", async (req, res) => {
   res.status(200)
 });
 
-async function getMilan(){
-  var res = await urllib.request('https://www.skysports.com/ac-milan-fixtures').then(function (result) {
+async function getInterFootballTeam(url){
+  var res = await urllib.request(url).then(function (result) {
   return result.data
   }).catch(function (err) {
   return "error"
@@ -75,137 +156,98 @@ async function getMilan(){
         match["today"] = "1"
       match = fixChar(match)
     }
+  }
 
+  if(match["name"] = ""){
+    match["name"] = "Inget event just nu!"
   }
 
   return match
 }
 
-async function getLFC(){
-  var res = await urllib.request('https://www.skysports.com/liverpool-fixtures').then(function (result) {
+async function getOtherTeam(url, team){
+  var res = await urllib.request(url).then(function (result) {
   return result.data
   }).catch(function (err) {
   return "error"
   })
 
   var match = {
-      "name": "",
-      "league": "",
-      "day": "",
-      "time": "",
-      "today": ""
+    "name": "",
+    "league": "",
+    "day": "",
+    "time": "",
+    "today": ""
   }
   if(res != "error"){
     var soup = new JSSoup(res);
 
-    if(soup.find("h4", {"class": "fixres__header2"})){
-      var result = soup.find("h4", {"class": "fixres__header2"}).text
-      match["day"] = soup.find("h4", {"class": "fixres__header2"}).text
-      match["league"] = soup.find("h5", {"class": "fixres__header3"}).text
-      var data = soup.find("div", {"class": "fixres__item"})
-      var data1 = data.findAll("span", {"class": "swap-text--bp30"})
-      match["name"] = data1[0].text.trim() +" - "+ data1[1].text.trim()
-      match["time"] = data.find("span", {"class": "matches__date"}).text.trim()
-      var tmp = match["time"].slice(0,2)
-      tmp = parseInt(tmp) + 1
-      match["time"] = tmp + match["time"].slice(2)
-      if(parseInt(match["day"].split(" ")[1]) == new Date().getDate())
-        match["today"] = "1"
-      match = fixChar(match)
+    var table = soup.find("section", {"id": "coming-matches"})
+    var games = table.find("div", {"class": "area"})
+    games = games.findAll("div")
+
+    var day = ""
+    var time = ""
+    var name = ""
+    for (var d of games){
+      if(d.attrs.class.includes('date')){
+        day = d.text
+      }
+      
+      if(d.attrs.class.includes('box')){
+        name = d.find("span", {"class": "home"}).text + " - " + d.find("span", {"class": "away"}).text
+        time = d.find("div", {"class": "time"}).text
+      }
+
+      if(name.includes(team)){
+        break
+      }
     }
 
-  }
+    if(name.includes(team)){
 
-  return match
-}
+      match["name"] = name
+      match["time"] = time
+      match["day"] = day
+      
+      tmp = new Date().getDate() +"/"+ (new Date().getMonth()+1)
 
-async function getIKO(){
-  var res = await urllib.request('https://www.oddevold.org?firstRef').then(function (result) {
-  return result.data
-  }).catch(function (err) {
-  return "error"
-  })
-
-  var match = {
-      "name": "",
-      "time": "",
-      "today": ""
-  }
-  if(res != "error"){
-    var soup = new JSSoup(res);
-
-    if(soup.find("b", {"class": "pageHeaderUpcomingEvents__title"})){
-
-      match["name"] = soup.find("b", {"class": "pageHeaderUpcomingEvents__title"}).text.trim()
-      match["time"] = soup.find("span", {"class": "pageHeaderUpcomingEvents__time"}).text.trim()
-      var tmp = new Date()
-      var str = tmp.getFullYear() + ", " + match["time"]
-      var time = new Date(str.replace("maj", "may").replace("okt", "oct"))
-      match["time"] = time.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
-      if(time.getDate() == new Date().getDate())
+      if(day.split(" ")[1] == tmp)
         match["today"] = "1"
       match = fixChar(match)
     }
     
   }
 
+  if(match["name"] = ""){
+    match["name"] = "Inget event just nu!"
+  }
+
   return match
 }
 
-async function getBrynäs(){
-  var res = await urllib.request('https://www.brynas.se/spelschema/SHL_2022_regular').then(function (result) {
+
+async function getInterFootballLeague(url){
+  var res = await urllib.request(url).then(function (result) {
   return result.data
   }).catch(function (err) {
   return "error"
   })
 
-  var match = {
-      "name": "",
-      "day": "",
-      "time": "",
-      "today": ""
-  }
+  var serie = []
   if(res != "error"){
     var soup = new JSSoup(res);
-    var data = soup.find("div", {"data-game-mode": "upcoming"})
 
-    if (data == 'None' || typeof data == 'undefined'){
-      res = await urllib.request('https://www.brynas.se/spelschema/SHL_2022_playoff').then(function (result) {
-      return result.data
-      }).catch(function (err) {
-      return "error"
-      })
-      
-      soup = new JSSoup(res);
-      data = soup.find("div", {"data-game-mode": "upcoming"})
+    var table = soup.findAll("table", {"class": "table"})
+    for (var d of table[0].contents[1].contents){
+      serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[7].text)
     }
-
-
-    if (data != 'None' && typeof data != 'undefined'){
-        var tmp = data.findAll("div", {"class": "rmss_c-schedule-game__team-name"})
-        var i = 0
-        for (var x of tmp){
-            if (i==0)
-                match["name"] = x.text + "-"
-            if (i==2)
-                match["name"] += x.text
-            i += 1
-        }
-        match["day"] = data.attrs["data-game-date"]
-        var day = new Date(match["day"])
-        match["day"] = day.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric' })
-        match["time"] = data.find("div", {"class": "rmss_c-schedule-game__start-time"}).text
-        if(day.getDate() == new Date().getDate())
-          match["today"] = "1"
-    }
-    match = fixChar(match)
   }
-
-  return match
+  return serie
 }
 
-async function getSHL(){
-  var res = await urllib.request('https://tabellen.se/hockey/shl').then(function (result) {
+async function getInterHockeyLeague(url){
+  var res = await urllib.request(url).then(function (result) {
   return result.data
   }).catch(function (err) {
   return "error"
@@ -224,205 +266,8 @@ async function getSHL(){
   return serie
 }
 
-async function getSerieA(){
-  var res = await urllib.request('https://tabellen.se/fotboll/serie-a').then(function (result) {
-  return result.data
-  }).catch(function (err) {
-  return "error"
-  })
-
-  var serie = []
-  if(res != "error"){
-    var soup = new JSSoup(res);
-
-    var table = soup.findAll("table", {"class": "table"})
-    for (var d of table[0].contents[1].contents){
-      serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[7].text)
-    }
-  }
-  return serie
-}
-
-async function getPL(){
-  var res = await urllib.request('https://tabellen.se/fotboll/premier-league').then(function (result) {
-  return result.data
-  }).catch(function (err) {
-  return "error"
-  })
-
-  var serie = []
-  if(res != "error"){
-    var soup = new JSSoup(res);
-
-    var table = soup.findAll("table", {"class": "table"})
-    for (var d of table[0].contents[1].contents){
-      serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[7].text)
-    }
-  }
-  return serie
-}
-
-async function getDIV1(){
-  var res = await urllib.request('https://tabellen.se/fotboll/division-1-sodra').then(function (result) {
-  return result.data
-  }).catch(function (err) {
-  return "error"
-  })
-
-  var serie = []
-  if(res != "error"){
-    var soup = new JSSoup(res);
-
-    var table = soup.findAll("table", {"class": "table"})
-    for (var d of table[0].contents[1].contents){
-      serie.push(d.contents[0].text+": "+d.contents[1].text+" "+d.contents[7].text)
-    }
-  }
-  return serie
-}
-
-async function getMarket(){
-  var DowJones = await urllib.request('https://se.investing.com/indices/us-30').then(function (result) {
-  return result.data
-  }).catch(function (err) {
-  return "error"
-  })
-  var OMXS30 = await urllib.request('https://se.investing.com/indices/omx-stockholm-30').then(function (result) {
-  return result.data
-  }).catch(function (err) {
-  return "error"
-  })
-
-  var market = [
-      "Dow Jones: ",
-      "OMXS30: "
-    ]
-
-  if(DowJones != "error" && OMXS30 != "error"){
-    var soup = new JSSoup(DowJones);
-    var dow = soup.find('span', {'data-test': 'instrument-price-change-percent'}).text.trim()
-
-    var soup = new JSSoup(OMXS30);
-    var omx = soup.find('span', {'data-test': 'instrument-price-change-percent'}).text.trim()
-
-    market = [
-      "Dow Jones: " + dow,
-      "OMXS30: " + omx
-    ]
-  }
-
-
-  return market
-}
-
-async function getUFC(){
-  var res = await urllib.request('https://www.tvmatchen.nu/fighting/').then(function (result) {
-  return result.data
-  }).catch(function (err) {
-  return "error"
-  })
-
-  var ufc = []
-  if(res != "error"){
-    var soup = new JSSoup(res);
-    var data = soup.findAll("div", {"itemtype": "http://schema.org/Event"})
-    var d1 = new Date().getDate()-1
-    var d2 = new Date().getDate()-2
-
-
-    var i = 1
-    for (var d of data){
-        var time = d.find("div", {"class": "match-time"}).attrs['content']
-        time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
-        var name = d.find("h3", {"itemprop": "name"}).text
-        var tmp = new Date(time).setYear(new Date().getFullYear())
-
-        if(time.split(' ')[1].includes(d1) || time.split(' ')[1].includes(d2))
-          continue
-        if(time.split(' ')[1].includes(d1+1) || time.split(' ').includes("Idag,"))
-          ufc.push({'time':time, 'name':name, 'today': "1"})
-        else
-          ufc.push({'time':time, 'name':name, 'today': ""})
-        if (i > 1)
-            break
-        i += 1
-    }
-  }
-
-  return ufc
-}
-
-async function getSpaceX(){
-  var res = await urllib.request('https://spacecoastlaunches.com/launch-list/').then(function (result) {
-  return result.data
-  }).catch(function (err) {
-  return "error"
-  })
-
-  var flight = {
-      "name": "",
-      "day": "",
-      "time": "",
-      "today": ""
-  }
-  if(res != "error"){
-    var soup = new JSSoup(res);
-
-
-    var data = soup.find("div", {"class": "three_fourth"})
-    if(data){
-      data = data.findAll("p")
-      flight["day"] = data[0].text.trim()
-      var day = new Date(flight["day"].replace("Date:", ""))
-      flight["day"] = day.toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric' })
-      flight["name"] = data[1].text.trim()
-      flight["time"] = data[4].text.trim()
-      if(day.getDate() == new Date().getDate())
-        flight["today"] = "1"
-    }
-  }
-  
-  return flight
-}
-
-async function getF1(){
-  var res = await urllib.request('https://www.tvmatchen.nu/motorsport/f1/').then(function (result) {
-  return result.data
-  }).catch(function (err) {
-  return "error"
-  })
-
-  var f1 = []
-  if(res != "error"){
-    var soup = new JSSoup(res);
-    var data = soup.findAll("div", {"itemtype": "http://schema.org/Event"})
-    var d1 = new Date().getDate()-1
-    var d2 = new Date().getDate()-2
-
-
-    var i = 1
-    for (var d of data){
-        var time = d.find("div", {"class": "match-time"}).attrs['content']
-        time = new Date(time).toLocaleDateString("sv-SE", { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
-        var name = d.find("h3", {"itemprop": "name"}).text
-        var tmp = new Date(time).setYear(new Date().getFullYear())
-
-        if(time.split(' ')[1].includes(d1) || time.split(' ')[1].includes(d2))
-          continue
-        if(time.split(' ')[1].includes(d1+1) || time.split(' ').includes("Idag,"))
-          f1.push({'time':time, 'name':name, 'today': "1"})
-        else
-          f1.push({'time':time, 'name':name, 'today': ""})
-        if (i > 1)
-            break
-        i += 1
-    }
-  }
-  return f1
-}
-
-async function getF1Standing(){
-  var res = await urllib.request('https://www.skysports.com/f1/standings').then(function (result) {
+async function getRacingLeague(url){
+  var res = await urllib.request(url).then(function (result) {
   return result.data
   }).catch(function (err) {
   return "error"
@@ -448,7 +293,28 @@ async function getF1Standing(){
   return f1
 }
 
-async function getSweden(){
+
+async function getMarket(name, url){
+  var stock = await urllib.request(url).then(function (result) {
+  return result.data
+  }).catch(function (err) {
+  return "error"
+  })
+
+  var market = name
+
+  if(stock != "error"){
+    var soup = new JSSoup(stock);
+    var res = soup.find('span', {'data-test': 'instrument-price-change-percent'}).text.trim()
+
+    market = market + ": " + res
+  }
+
+
+  return market
+}
+
+async function getCountry(country){
   var sports = ["Fotboll","Ishockey","Skidor","Handboll","Friidrott","Innebandy"]
   var result = []
   for (var s of sports){
@@ -460,8 +326,6 @@ async function getSweden(){
 
     var swe = []
     if(res != "error"){
-      if(s == "Skidor")
-        s = "Vinter"
       var soup = new JSSoup(res);
       //var data = soup.findAll("div", {"itemtype": "http://schema.org/Event"})
       var data = soup.findAll("div", {"class": "match-detail"})
@@ -473,7 +337,7 @@ async function getSweden(){
           var time = d.find("div", {"class": "match-time"}).attrs['content']
           var name = d.find("h3").text
           
-          if(name.toLowerCase().includes("sverige") || s == "Vinter"){
+          if(name.toLowerCase().includes(country.toLowerCase())){
             var d1 = new Date().getDate()-1
             var d2 = new Date().getDate()-2
             time = d.find("div", {"class": "match-time"}).text
@@ -503,8 +367,66 @@ async function getSweden(){
     if(result.length > 1)
       break
   }
+
+  if(result.length == 0){
+    result.push({'time':"Inget event just nu!", 'name':"", 'today': ""})
+  }
+
   return result.slice(0,2)
 }
+
+async function getOtherSport(sport){
+  if(sport == "UFC")
+    sport = "fighting/ufc"
+  if(sport == "Formel 1 Race")
+    sport = "motorsport/f1"
+  var res = await urllib.request('https://www.tvmatchen.nu/'+sport+'/').then(function (result) {
+  return result.data
+  }).catch(function (err) {
+  return "error"
+  })
+
+  var ufc = []
+  if(res != "error"){
+    var soup = new JSSoup(res);
+    var data = soup.findAll("div", {"class": "match-detail"})
+    
+
+    var i = 1
+    for (var d of data){
+        d = d.parent
+        var time = d.find("div", {"class": "match-time"}).attrs['content']
+        var name = d.find("h3").text
+        var d1 = new Date().getDate()-1
+        var d2 = new Date().getDate()-2
+        time = d.find("div", {"class": "match-time"}).text
+        time = time + ' - ' + d.parent.previousElement.parent.previousElement._text
+
+        if(time.split(' ')[2].includes(d1) || time.split(' ')[2].includes(d2)){
+          continue
+        }
+        if(time.split(' ')[2].includes(d1+1) || time.split(' ').includes("Idag,")){
+          if(!(new Date().getHours() > time.slice(0,2)))
+            ufc.push({'time':time, 'name':name, 'today': "1"})
+          else
+            continue
+        }else{
+          ufc.push({'time':time, 'name':name, 'today': ""})
+        }
+
+        if (i > 1)
+            break
+        i += 1
+    }
+  }
+
+  if(ufc.length == 0){
+    ufc.push({'time':"Inget event just nu!", 'name':"", 'today': ""})
+  }
+
+  return ufc
+}
+
 
 async function getTV(){
   var tv = ["SVT1", "SVT2", "TV3", "TV4", "Kanal-5"]

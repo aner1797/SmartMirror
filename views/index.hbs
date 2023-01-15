@@ -1,18 +1,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    if ($('.container').length == 0){
-        $.ajax({ url: '/data'
-            , type: 'GET'
-            , dataType: 'html'
-            })
-        .done(function(data) {
-        $('.container').html(data);
-        })
-        .fail(function() {
-        console.log("Something went wrong!");
-        });
-    }
-</script>
+
 
 <div id="divHeader">
     <h1 id="header">SMART-MIRROR</h1>
@@ -20,8 +7,458 @@
  
 <div class="container">
 
-        <div class="progress"></div>
+        {{!-- <div class="progress"></div> --}}
 </div>
+
+<button class="settings" onclick="settings()">Inställningar</button>
+<button class="settings2" onclick="window.location.reload();">Tillbaka</button>
+
+<div id="topDiv">
+    <div id="search">
+        <header><h2 id="searchHeader">Välj 4 Favoritlag</h2></header>
+        <h3 id="countTeam">0 av 4</h3>
+
+        <input type="text" id="myInputTeam" class="myInput" onkeyup="myFunctionTeam()" placeholder="Sök...">
+
+        <ul id="myULTeam" class="myUL">
+            {{#each teams}}
+                <li>{{this.[0]}}</li>
+            {{/each}}
+        </ul>
+    </div>
+
+    <div id="search">
+        <header><h2 id="searchHeader">Välj 5 Tabeller</h2></header>
+        <h3 id="countLeague">0 av 5</h3>
+
+        <input type="text" id="myInputLeague" class="myInput" onkeyup="myFunctionLeague()" placeholder="Sök...">
+
+        <ul id="myULLeague" class="myUL">
+            {{#each leagues}}
+                <li>{{this.[0]}}</li>
+            {{/each}}
+        </ul>
+    </div>
+
+    <div id="search">
+        <header><h2 id="searchHeader">Välj 1 Land</h2></header>
+        <h3 id="countCountry">0 av 1</h3>
+
+        <input type="text" id="myInputCountry" class="myInput" onkeyup="myFunctionCountry()" placeholder="Sök...">
+
+        <ul id="myULCountry" class="myUL">
+            {{#each country}}
+                <li>{{this.[0]}}</li>
+            {{/each}}
+        </ul>
+    </div>
+
+    <div id="search">
+        <header><h2 id="searchHeader">Välj 4 Övriga Event</h2></header>
+        <h3 id="countOther">0 av 4</h3>
+
+        <input type="text" id="myInputOther" class="myInput" onkeyup="myFunctionOther()" placeholder="Sök...">
+
+        <ul id="myULOther" class="myUL">
+            {{#each other}}
+                <li>{{this.[0]}}</li>
+            {{/each}}
+        </ul>
+    </div>
+
+    <div id="search">
+        <header><h2 id="searchHeader">Välj 4 Börsindex</h2></header>
+        <h3 id="countMarket">0 av 4</h3>
+
+        <input type="text" id="myInputMarket" class="myInput" onkeyup="myFunctionMarket()" placeholder="Sök...">
+
+        <ul id="myULMarket" class="myUL">
+            {{#each markets}}
+                <li>{{this.[0]}}</li>
+            {{/each}}
+        </ul>
+    </div>
+
+    <div id="cartDiv">
+        <header><h2 id="cartHeader">Dina Val</h2></header>
+        
+        <ul id="cart"></ul>
+        <button id="submitBtn" onclick="sendClick()">SKICKA</button>
+    </div>
+</div>
+
+<script>
+function myFunctionTeam() {
+    // Declare variables
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById('myInputTeam');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myULTeam");
+    li = ul.getElementsByTagName('li');
+    ul.style.display = ""
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < li.length; i++) {
+        txtValue = li[i].textContent || li[i].innerText;
+        //if (txtValue.toUpperCase().indexOf(filter) > -1 && filter != "") {
+        if (filter.split(" ").every(el => txtValue.toUpperCase().includes(el))) {
+        li[i].style.display = "block";
+        } else {
+        li[i].style.display = "none";
+        }
+    }
+
+}
+
+function myFunctionLeague() {
+    // Declare variables
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById('myInputLeague');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myULLeague");
+    li = ul.getElementsByTagName('li');
+    ul.style.display = ""
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < li.length; i++) {
+        txtValue = li[i].textContent || li[i].innerText;
+        //if (txtValue.toUpperCase().indexOf(filter) > -1 && filter != "") {
+        if (filter.split(" ").every(el => txtValue.toUpperCase().includes(el))) {
+        li[i].style.display = "block";
+        } else {
+        li[i].style.display = "none";
+        }
+    }
+
+}
+
+function myFunctionCountry() {
+    // Declare variables
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById('myInputCountry');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myULCountry");
+    li = ul.getElementsByTagName('li');
+    ul.style.display = ""
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < li.length; i++) {
+        txtValue = li[i].textContent || li[i].innerText;
+        //if (txtValue.toUpperCase().indexOf(filter) > -1 && filter != "") {
+        if (filter.split(" ").every(el => txtValue.toUpperCase().includes(el))) {
+        li[i].style.display = "block";
+        } else {
+        li[i].style.display = "none";
+        }
+    }
+
+}
+
+function myFunctionOther() {
+    // Declare variables
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById('myInputOther');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myULOther");
+    li = ul.getElementsByTagName('li');
+    ul.style.display = ""
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < li.length; i++) {
+        txtValue = li[i].textContent || li[i].innerText;
+        //if (txtValue.toUpperCase().indexOf(filter) > -1 && filter != "") {
+        if (filter.split(" ").every(el => txtValue.toUpperCase().includes(el))) {
+        li[i].style.display = "block";
+        } else {
+        li[i].style.display = "none";
+        }
+    }
+
+}
+
+function myFunctionMarket() {
+    // Declare variables
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById('myInputMarket');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myULMarket");
+    li = ul.getElementsByTagName('li');
+    ul.style.display = ""
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < li.length; i++) {
+        txtValue = li[i].textContent || li[i].innerText;
+        //if (txtValue.toUpperCase().indexOf(filter) > -1 && filter != "") {
+        if (filter.split(" ").every(el => txtValue.toUpperCase().includes(el))) {
+        li[i].style.display = "block";
+        } else {
+        li[i].style.display = "none";
+        }
+    }
+
+}
+
+
+function checkNrAdded(li) {
+    // Declare variables
+    var cart = document.getElementById("cart");
+    cart = cart.getElementsByTagName('li');
+    count = 0;
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < li.length; i++) {
+        txtValue = li[i].textContent || li[i].innerText;
+        for (p = 0; p < cart.length; p++) {
+          cartValue = cart[p].textContent || cart[p].innerText;
+          if (cartValue == txtValue) {
+            count += 1;
+          } 
+        }
+    }
+
+    return count
+
+}
+
+function sendClick() {
+    // Declare variables
+    var cart = document.getElementById("cart");
+    cart = cart.getElementsByTagName('li');
+    list = [];
+
+    for (p = 0; p < cart.length; p++) {
+      cartValue = cart[p].textContent || cart[p].innerText;
+      list.push(cartValue);
+    }
+
+    if (list.length == 18){
+      localStorage['myData'] = JSON.stringify(list);
+
+          $.ajax({ url: '/data'
+              , type: 'POST'
+              , data: {list: list}
+              }).done(function(data) {
+          $('.container').html(data);
+          var settings = document.querySelector('.settings')
+          var back = document.querySelector('.settings2')
+          settings.style.display = "block";
+          back.style.display = "none";
+          })
+          .fail(function() {
+          console.log("Something went wrong!");
+          });
+
+      searchDiv = document.getElementById('topDiv');
+      searchDiv.style.display = "none";
+
+
+      var cont = document.querySelector('.container')
+      var div = document.createElement("div");
+      div.className = "progress";
+      cont.appendChild(div)
+      
+      let pb = new Progress(0, 0, 100, {parent : ".progress"});
+
+      pb.startTo(5, 3000);
+
+      setTimeout( () => {
+        pb.end()
+      }, 60000)
+    }else{
+      alert("Lägg till fler!");
+    }
+}
+
+function settings() {
+    var cont = document.querySelector('.container')
+    var searchDiv = document.getElementById('topDiv');
+    var settings = document.querySelector('.settings')
+    var back = document.querySelector('.settings2')
+    cont.innerHTML = ""
+    searchDiv.style.display = "flex";
+    settings.style.display = "none";
+    back.style.display = "block";
+
+}
+</script>
+
+
+
+<script>
+    var ul = document.getElementById("cart");
+    var btn = document.getElementById("submitBtn");
+    var cleanbtn = document.getElementById("cleanBtn");
+
+
+    document.querySelectorAll('#myULTeam li').forEach((item) => {
+        item.addEventListener('click', (e) => {
+              list = document.getElementById("myULTeam");
+              list = list.getElementsByTagName('li');
+              count = checkNrAdded(list)
+              counter = document.getElementById("countTeam");
+
+
+              if(count < 4){
+                if(!document.getElementById("cart").innerText.includes(e.target.innerText)){
+                    counter.innerText = (count+1) + " av 4"
+                    var li = document.createElement("li");
+                    var img = document.createElement("img");
+                    img.src = "delete.png"
+                    img.style.width = "15%"
+                    img.style.float = "left"
+                    li.appendChild(img);
+                    li.appendChild(document.createTextNode(e.target.innerText));
+                    
+                    img.addEventListener('click', (e) => {
+                        li.remove()
+                        list = document.getElementById("myULTeam");
+                        list = list.getElementsByTagName('li');
+                        count = checkNrAdded(list)
+                        counter = document.getElementById("countTeam");
+                        counter.innerText = (count) + " av 4"
+                    })
+                    ul.appendChild(li);
+                }
+              }
+
+        })
+    });
+
+    document.querySelectorAll('#myULLeague li').forEach((item) => {
+        item.addEventListener('click', (e) => {
+              list = document.getElementById("myULLeague");
+              list = list.getElementsByTagName('li');
+              count = checkNrAdded(list)
+              counter = document.getElementById("countLeague");
+
+
+              if(count < 5){
+                if(!document.getElementById("cart").innerText.includes(e.target.innerText)){
+                    counter.innerText = (count+1) + " av 5"
+                    var li = document.createElement("li");
+                    var img = document.createElement("img");
+                    img.src = "delete.png"
+                    img.style.width = "15%"
+                    img.style.float = "left"
+                    li.appendChild(img);
+                    li.appendChild(document.createTextNode(e.target.innerText));
+                    
+                    img.addEventListener('click', (e) => {
+                        li.remove()
+                        list = document.getElementById("myULLeague");
+                        list = list.getElementsByTagName('li');
+                        count = checkNrAdded(list)
+                        counter = document.getElementById("countLeague");
+                        counter.innerText = (count) + " av 5"
+                    })
+                    ul.appendChild(li);
+                }
+              }
+        })
+    });
+
+    document.querySelectorAll('#myULCountry li').forEach((item) => {
+        item.addEventListener('click', (e) => {
+              list = document.getElementById("myULCountry");
+              list = list.getElementsByTagName('li');
+              count = checkNrAdded(list)
+              counter = document.getElementById("countCountry");
+
+
+              if(count < 1){
+                if(!document.getElementById("cart").innerText.includes(e.target.innerText)){
+                    counter.innerText = (count+1) + " av 1"
+                    var li = document.createElement("li");
+                    var img = document.createElement("img");
+                    img.src = "delete.png"
+                    img.style.width = "15%"
+                    img.style.float = "left"
+                    li.appendChild(img);
+                    li.appendChild(document.createTextNode(e.target.innerText));
+                    
+                    img.addEventListener('click', (e) => {
+                        li.remove()
+                        list = document.getElementById("myULCountry");
+                        list = list.getElementsByTagName('li');
+                        count = checkNrAdded(list)
+                        counter = document.getElementById("countCountry");
+                        counter.innerText = (count) + " av 1"
+                    })
+                    ul.appendChild(li);
+                }
+              }
+        })
+    });
+
+    document.querySelectorAll('#myULOther li').forEach((item) => {
+        item.addEventListener('click', (e) => {
+              list = document.getElementById("myULOther");
+              list = list.getElementsByTagName('li');
+              count = checkNrAdded(list)
+              counter = document.getElementById("countOther");
+
+
+              if(count < 4){
+                if(!document.getElementById("cart").innerText.includes(e.target.innerText)){
+                    counter.innerText = (count+1) + " av 4"
+                    var li = document.createElement("li");
+                    var img = document.createElement("img");
+                    img.src = "delete.png"
+                    img.style.width = "15%"
+                    img.style.float = "left"
+                    li.appendChild(img);
+                    li.appendChild(document.createTextNode(e.target.innerText));
+                    
+                    img.addEventListener('click', (e) => {
+                        li.remove()
+                        list = document.getElementById("myULOther");
+                        list = list.getElementsByTagName('li');
+                        count = checkNrAdded(list)
+                        counter = document.getElementById("countOther");
+                        counter.innerText = (count) + " av 4"
+                    })
+                    ul.appendChild(li);
+                }
+              }
+        })
+    });
+
+    document.querySelectorAll('#myULMarket li').forEach((item) => {
+        item.addEventListener('click', (e) => {
+              list = document.getElementById("myULMarket");
+              list = list.getElementsByTagName('li');
+              count = checkNrAdded(list)
+              counter = document.getElementById("countMarket");
+
+
+              if(count < 4){
+                if(!document.getElementById("cart").innerText.includes(e.target.innerText)){
+                    counter.innerText = (count+1) + " av 4"
+                    var li = document.createElement("li");
+                    var img = document.createElement("img");
+                    img.src = "delete.png"
+                    img.style.width = "15%"
+                    img.style.float = "left"
+                    li.appendChild(img);
+                    li.appendChild(document.createTextNode(e.target.innerText));
+                    
+                    img.addEventListener('click', (e) => {
+                        li.remove()
+                        list = document.getElementById("myULMarket");
+                        list = list.getElementsByTagName('li');
+                        count = checkNrAdded(list)
+                        counter = document.getElementById("countMarket");
+                        counter.innerText = (count) + " av 4"
+                    })
+                    ul.appendChild(li);
+                }
+              }
+        })
+    });
+</script>
+
+
+
 
 
 <script>
@@ -84,15 +521,46 @@ class Progress {
   }
 }
 
+</script>
 
-let pb = new Progress(0, 0, 100, {parent : ".progress"});
 
-//arg1 -> step length
-//arg2 -> time(ms)
-pb.startTo(5, 3000);
 
-//end to progress after 5s
-setTimeout( () => {
-  pb.end()
-}, 60000)
+
+<script>
+  //GET Cache DATA
+  var stored = localStorage['myData'];
+  if(stored){
+    list = JSON.parse(stored);
+
+    if (list.length == 18){
+        $.ajax({ url: '/data'
+            , type: 'POST'
+            , data: {list: list}
+            }).done(function(data) {
+        $('.container').html(data);
+        var settings = document.querySelector('.settings')
+        settings.style.display = "block";
+        })
+        .fail(function() {
+        console.log("Something went wrong!");
+        });
+
+      searchDiv = document.getElementById('topDiv');
+      searchDiv.style.display = "none";
+
+
+      var cont = document.querySelector('.container')
+      var div = document.createElement("div");
+      div.className = "progress";
+      cont.appendChild(div)
+      
+      let pb = new Progress(0, 0, 100, {parent : ".progress"});
+
+      pb.startTo(5, 3000);
+
+      setTimeout( () => {
+        pb.end()
+      }, 60000)
+    }
+  }
 </script>

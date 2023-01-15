@@ -11,6 +11,11 @@ body{
   margin: 0;
 }
 
+h2, h3{
+  color: #0a2531;
+  text-decoration: underline;
+}
+
 .container {
   display: flex; /* or inline-flex */
   justify-content: center;
@@ -61,7 +66,176 @@ li{
 .progress {
   width: 40%;
   align-self: center;
+  border-radius: 50px;
+  border-style: dotted;
+  border-color: white;
 }
+
+#topDiv{
+  width: 100%;
+  display: flex;
+}
+
+#search{
+    flex: 1;
+    text-align: center;
+    background: rgb(56,133,109);
+    background: linear-gradient(30deg, rgba(56,133,109,1) 0%, rgba(46,161,124,1) 42%, rgba(44,122,97,1) 100%);
+    border-radius: 1vw;
+    margin: 1vw;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  }
+
+.myInput {
+    width: 70%; /* Full-width */
+    font-size: 1vw; /* Increase font-size */
+    border: 1px solid #1b7275; /* Add a grey border */
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 2%;
+    border-radius: 1vw;
+    background-color: #1b7275;
+    color: #ffffff;
+  }
+  .myInput::placeholder {
+    color: #ffffff;
+  }
+  
+  .myUL {
+    /* Remove default list styling */
+    list-style-type: none;
+    display: inline-block;
+    padding: 0;
+    width: 60%;
+    height: 20vw;
+    overflow: auto;
+    margin: 0;
+  }
+  
+  .myUL li {
+    border: 1px solid #2a9296; /* Add a border to all links */
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #1b7275; /* Grey background color */
+    padding: 0.6vw; /* Add some padding */
+    text-decoration: none; /* Remove default text underline */
+    color: #d9ed92; /* Add a black text color */
+    display: block; /* Make it into a block element to fill the whole list */
+    font-size: 1vw;
+  }
+  
+  .myUL li:hover:not(.header) {
+    background-color: #2a8a8d; /* Add a hover effect to all links, except for headers */
+  }
+
+  #cartDiv{
+    flex: 1;
+    text-align: center;
+    /*background-color: #46a2bd;*/
+    /* background-color: #bf8e52; */
+    background: linear-gradient(330deg, rgba(149,110,63,1) 0%, rgba(201,150,85,1) 54%, rgba(130,102,67,1) 100%);
+    border-radius: 1vw;
+    margin: 1vw;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  }
+
+
+  #cart {
+    /* Remove default list styling */
+    list-style-type: none;
+    width: 70%;
+    display: inline-block;
+    padding: 0;
+    height: 20vw;
+    overflow: auto;
+  }
+  
+  #cart li {
+    /*background-color: #1b7275;
+    border: 1px solid #2a9296; */
+    background-color: #86552c; /* Grey background color */
+    border: 1px solid #d0b25d; /* Add a border to all links */
+    margin-top: 0px; /* Prevent double borders */
+    padding: 0.8vw; /* Add some padding */
+    text-decoration: none; /* Remove default text underline */
+    color: #d9ed92; /* Add a black text color */
+    display: block; /* Make it into a block element to fill the whole list */
+    font-size: 1vw;
+  }
+
+  #cart li input{
+    float: right;
+    width: 3vw;
+    font-size: 1vw;
+  }
+
+  .settings {
+    background-color: rgb(56,133,109); /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 1vw;
+
+    position:absolute;
+    top:0;
+    right:0;
+  }
+
+  .settings:hover {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+  }
+
+  .settings2 {
+    background-color: rgb(56,133,109); /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 1vw;
+
+    position:absolute;
+    top:0;
+    right:0;
+  }
+
+  .settings2:hover {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+  }
+
+
+
+  #submitBtn {
+    background-color: rgb(56,133,109); /* Green */
+    border: none;
+    color: #d9ed92;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.2vw;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 1vw;
+  }
+
+  #submitBtn:hover {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+  }
 
 @media (orientation: portrait) {
 

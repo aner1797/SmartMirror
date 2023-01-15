@@ -1,41 +1,19 @@
 <div class="row">
-        <div id="box" {{#if milan.today}}style="border: thick dashed red;"{{/if}}>
-            <h2 id="title">AC Milan</h2>
+    {{#each teams}}
+        <div id="box" {{#if this.today}}style="border: thick dashed red;"{{/if}}>
+            <h2 id="title">{{this.header}}</h2>
             <h4 id="title">NÄSTA MATCH</h4>
-            {{milan.name}}<br>
-            {{milan.league}}<br>
-            {{milan.day}}<br>
-            {{milan.time}}
+            {{this.name}}<br>
+            {{this.day}}<br>
+            {{this.time}}<br>
+            {{this.league}}
         </div>
+    {{/each}}
 
-        <div id="box" {{#if lfc.today}}style="border: thick dashed red;"{{/if}}>
-            <h2 id="title">Liverpool FC</h2>
+        <div id="box" {{#if country.country.[0].today}}style="border: thick dashed red;"{{/if}}>
+            <h2 id="title">{{country.header}}</h2>
             <h4 id="title">NÄSTA MATCH</h4>
-            {{lfc.name}}<br>
-            {{lfc.league}}<br>
-            {{lfc.day}}<br>
-            {{lfc.time}}
-        </div>
-
-        <div id="box" {{#if iko.today}}style="border: thick dashed red;"{{/if}}>
-            <h2 id="title">IK Oddevold</h2>
-            <h4 id="title">NÄSTA MATCH</h4>
-            {{iko.name}}<br>
-            {{iko.time}}
-        </div>
-
-        <div id="box" {{#if brynäs.today}}style="border: thick dashed red;"{{/if}}>
-            <h2 id="title">Brynäs</h2>
-            <h4 id="title">NÄSTA MATCH</h4>
-            {{brynäs.name}}<br>
-            {{brynäs.day}}<br>
-            {{brynäs.time}}
-        </div>
-
-        <div id="box" {{#if sweden.[0].today}}style="border: thick dashed red;"{{/if}}>
-            <h2 id="title">Sverige</h2>
-            <h4 id="title">NÄSTA MATCH</h4>
-            {{#each sweden}}
+            {{#each country.country}}
                 {{this.time}}<br>
                 <u>{{this.name}}</u><br>
             {{/each}}
@@ -45,85 +23,35 @@
     <div class="row">
         <div id="box">
             <h2 id="title">Marknad</h2>
-            <h4 id="title">Index</h4>
-            {{#each market}}
+            <h4 id="title">Index Idag</h4>
+            {{#each markets}}
                 <li>{{this}}</li>
             {{/each}}
         </div>
 
-        <div id="box" {{#if ufc.[0].today}}style="border: thick dashed red;"{{/if}}>
-            <h2 id="title">UFC</h2>
-            <h4 id="title">NÄSTA FIGHT</h4>
-            {{#each ufc}}
-                {{this.time}}<br>
-                <u>{{this.name}}</u><br>
-            {{/each}}
-        </div>
-
-        <div id="box" {{#if space.today}}style="border: thick dashed red;"{{/if}}>
-            <h2 id="title">Space X</h2>
-            <h4 id="title">NÄSTA FLYGNING</h4>
-            {{space.name}}<br>
-            {{space.day}}<br>
-            {{space.time}} (EST)
-        </div>
-
-        <div id="box" {{#if f1.[0].today}}style="border: thick dashed red;"{{/if}}>
-            <h2 id="title">Formel 1</h2>
-            <h4 id="title">NÄSTA RACE</h4>
-            {{#each f1}}
-                {{this.time}}<br>
-                <u>{{this.name}}</u><br>
-            {{/each}}
-        </div>
-
-        {{!-- <div id="box" style="border: thick dashed red;">
-            <h2 id="title">TV Idag</h2>
-            {{#each tv}}
-                <u>{{this.ch}}</u><br>
-                {{#each this.content}}
-                    {{this}}<br>
+        {{#each others}}
+            <div id="box" {{#if this.other.[0].today}}style="border: thick dashed red;"{{/if}}>
+                <h2 id="title">{{this.header}}</h2>
+                <h4 id="title">NÄSTA EVENT</h4>
+                {{#each this.other}}
+                    {{this.time}}<br>
+                    <u>{{this.name}}</u><br>
                 {{/each}}
-            {{/each}}
-        </div> --}}
+            </div>
+        {{/each}}
+
     </div>
     
 
     <div class="row">
-        <div id="box">
-            <h2 id="title">SHL</h2>
-            {{#each shl}}
-                <li>{{this}}</li>
-            {{/each}}
-        </div>
-
-        <div id="box">
-            <h2 id="title">Serie A</h2>
-            {{#each seriea}}
-                <li>{{this}}</li>
-            {{/each}}
-        </div>
-
-        <div id="box">
-            <h2 id="title">Premier League</h2>
-            {{#each pl}}
-                <li>{{this}}</li>
-            {{/each}}
-        </div>
-
-        <div id="box">
-            <h2 id="title">Div 1 Södra</h2>
-            {{#each div1}}
-                <li>{{this}}</li>
-            {{/each}}
-        </div>
-
-        <div id="box">
-            <h2 id="title">Formel 1</h2>
-            {{#each f1stand}}
-                <li>{{this}}</li>
-            {{/each}}
-        </div>
+        {{#each leagues}}
+            <div id="box">
+                <h2 id="title">{{this.header}}</h2>
+                {{#each this.league}}
+                    <li>{{this}}</li>
+                {{/each}}
+            </div>
+        {{/each}}
 
         <div id="box" style="border: thick dashed red;">
             <h2 id="title">TV IDAG</h2>
