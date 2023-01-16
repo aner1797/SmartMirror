@@ -87,7 +87,7 @@ li{
   }
 
 .myInput {
-    width: 70%; /* Full-width */
+    width: 90%; /* Full-width */
     font-size: 1vw; /* Increase font-size */
     border: 1px solid #1b7275; /* Add a grey border */
     padding-top: 2%;
@@ -106,7 +106,7 @@ li{
     list-style-type: none;
     display: inline-block;
     padding: 0;
-    width: 60%;
+    width: 80%;
     height: 20vw;
     overflow: auto;
     margin: 0;
@@ -236,6 +236,23 @@ li{
     background-color: #ffffff;
     color: rgb(0, 0, 0);
   }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    margin-left: 40%;
+    justify-content: center;
+    text-align: center;
+    margin-top: 5%;
+  }
+
+  form input {
+    border-radius: 1vw;
+    padding: 1vw;
+    font-size: 1vw;
+  }
+
 
 @media (orientation: portrait) {
 

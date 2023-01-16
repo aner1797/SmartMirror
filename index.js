@@ -4,7 +4,8 @@ const path = require("path");
 const fs = require('fs');
 var urllib = require('urllib');
 var JSSoup = require('jssoup').default;
-
+const cookieParser = require("cookie-parser");
+const sessions = require('express-session');
 
 
 const app = express();
@@ -14,114 +15,160 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
+// creating 24 hours from milliseconds.... 10 days
+const oneDay = 1000 * 60 * 60 * 24 * 10;
+
+//session middleware
+app.use(sessions({
+    secret: "kadknk73nk24o!2e!?dfdsf3lpbma2mt4nc",
+    saveUninitialized:true,
+    cookie: { maxAge: oneDay },
+    resave: false
+}));
+
+app.use(cookieParser());
+
+
+
 app.get("/", async (req, res) => {
   const jsonData = require("./public/data.json")
-  res.render("index.hbs", jsonData)
-  res.status(200)
+
+
+  if(req.session.userid){
+    res.render("index.hbs", jsonData)
+    res.status(200)
+  }else{
+    res.render("login.hbs")
+    res.status(200)
+  }
+
+
+});
+
+app.post("/login", async (req, res) => {
+  const jsonData = require("./public/data.json")
+
+  if(req.body.username == "erik" && req.body.password == "erik"){
+    req.session.userid = req.body.username
+    res.redirect("/")
+    res.status(200)
+  }else{
+    res.render("login.hbs", {fail: true})
+    res.status(200)
+  }
+});
+
+app.get("/login", async (req, res) => {
+    res.redirect("/")
+    res.status(200)
 });
 
 
 app.post("/data", async (req, res) => {
-  /* console.log(req.body) */
-  const jsonData = require("./public/data.json")
-  var list = req.body.list
-  var teams = []
-  var others = []
-  var leagues = []
-  var country = {}
-  var markets = []
+  
+  if(req.session.userid){
 
-  if(list.length == 18){
-    for(var item of list){
+    const jsonData = require("./public/data.json")
+    var list = req.body.list
+    var teams = []
+    var others = []
+    var leagues = []
+    var country = {}
+    var markets = []
 
-      for(var data of jsonData["teams"]){
-        if(data[0] == item){
-          switch (data[2]) {
-            case "InterFootball":
-              var tmp = await getInterFootballTeam(data[1])
-              tmp["header"] = data[0]
-              teams.push(tmp)
-              break;
-            case "SportOther":
-              var tmp = await getOtherTeam(data[1], data[0])
-              tmp["header"] = data[0]
-              teams.push(tmp)
-              break;
-            default:
-              break;
+    if(list.length == 18){
+      for(var item of list){
+
+        for(var data of jsonData["teams"]){
+          if(data[0] == item){
+            switch (data[2]) {
+              case "InterFootball":
+                var tmp = await getInterFootballTeam(data[1])
+                tmp["header"] = data[0]
+                teams.push(tmp)
+                break;
+              case "SportOther":
+                var tmp = await getOtherTeam(data[1], data[0])
+                tmp["header"] = data[0]
+                teams.push(tmp)
+                break;
+              default:
+                break;
+            }
           }
         }
-      }
 
-      for(var data of jsonData["leagues"]){
-        if(data[0] == item){
-          switch (data[2]) {
-            case "InterFootball":
-              var mod = {
-                league: await getInterFootballLeague(data[1]),
-                header: data[0]
-              }
-              leagues.push(mod)
-              break;
-            case "Hockey":
-              var mod = {
-                league: await getInterHockeyLeague(data[1]),
-                header: data[0]
-              }
-              leagues.push(mod)
-              break;
-            case "Racing":
-              var mod = {
-                league: await getRacingLeague(data[1]),
-                header: data[0]
-              }
-              leagues.push(mod)
-              break;
-            default:
-              break;
+        for(var data of jsonData["leagues"]){
+          if(data[0] == item){
+            switch (data[2]) {
+              case "InterFootball":
+                var mod = {
+                  league: await getInterFootballLeague(data[1]),
+                  header: data[0]
+                }
+                leagues.push(mod)
+                break;
+              case "Hockey":
+                var mod = {
+                  league: await getInterHockeyLeague(data[1]),
+                  header: data[0]
+                }
+                leagues.push(mod)
+                break;
+              case "Racing":
+                var mod = {
+                  league: await getRacingLeague(data[1]),
+                  header: data[0]
+                }
+                leagues.push(mod)
+                break;
+              default:
+                break;
+            }
           }
         }
-      }
 
-      for(var data of jsonData["country"]){
-        if(data[0] == item){
-          var mod = {
-            country: await getCountry(data[0]),
-            header: data[0]
+        for(var data of jsonData["country"]){
+          if(data[0] == item){
+            var mod = {
+              country: await getCountry(data[0]),
+              header: data[0]
+            }
+            country = mod
           }
-          country = mod
         }
-      }
 
-      for(var data of jsonData["other"]){
-        if(data[0] == item){
-          var mod = {
-            other: await getOtherSport(data[0]),
-            header: data[0]
+        for(var data of jsonData["other"]){
+          if(data[0] == item){
+            var mod = {
+              other: await getOtherSport(data[0]),
+              header: data[0]
+            }
+            others.push(mod)
           }
-          others.push(mod)
         }
-      }
 
-      for(var data of jsonData["markets"]){
-        if(data[0] == item){
-          markets.push(await getMarket(data[0], data[1]))
+        for(var data of jsonData["markets"]){
+          if(data[0] == item){
+            markets.push(await getMarket(data[0], data[1]))
+          }
         }
       }
     }
+
+    const model = {
+      teams: teams,
+      leagues: leagues,
+      others: others,
+      country: country,
+      markets: markets,
+      tv: await getTV(),
+    } 
+
+    res.render("data.hbs", model)
+    res.status(200)
+
   }
-
-  const model = {
-    teams: teams,
-    leagues: leagues,
-    others: others,
-    country: country,
-    markets: markets,
-    tv: await getTV(),
-  } 
-
-  res.render("data.hbs", model)
-  res.status(200)
 });
 
 async function getInterFootballTeam(url){

@@ -1,0 +1,16 @@
+
+
+<div id="divHeader">
+    <h1 id="header">SMART-MIRROR</h1>
+</div>
+ 
+
+
+  <form action="/login" method="post">
+      <input type="text" name="username" id="username" placeholder="Användarnamn">
+      <input type="password" name="password" id="password" placeholder="Lösenord">
+      <input style="background-color: rgb(56,133,109);" type="submit" value="Logga in">
+  {{#if fail}}
+  <h3 style="color: red;">Fel användarnamn eller lösenord!</h3>
+  {{/if}}
+  </form>
