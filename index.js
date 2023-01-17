@@ -6,6 +6,7 @@ var urllib = require('urllib');
 var JSSoup = require('jssoup').default;
 const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
+const bcrypt = require('bcrypt');
 
 
 const app = express();
@@ -33,7 +34,6 @@ app.use(cookieParser());
 app.get("/", async (req, res) => {
   const jsonData = require("./public/data.json")
 
-
   if(req.session.userid){
     res.render("index.hbs", jsonData)
     res.status(200)
@@ -48,7 +48,19 @@ app.get("/", async (req, res) => {
 app.post("/login", async (req, res) => {
   const jsonData = require("./public/data.json")
 
-  if(req.body.username == "erik" && req.body.password == "erik"){
+  /* const hash = bcrypt.hashSync(req.body.password, 10);
+  console.log(hash) */
+
+  let userData = fs.readFileSync('public/users.json');
+  userData = JSON.parse(userData);
+
+  var correct = false
+  if(userData[req.body.username]){
+    correct = await bcrypt.compare(req.body.password, userData[req.body.username])
+  }
+
+  
+  if(correct){
     req.session.userid = req.body.username
     res.redirect("/")
     res.status(200)
