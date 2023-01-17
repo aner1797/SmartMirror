@@ -533,6 +533,14 @@ class Progress {
     list = JSON.parse(stored);
 
     if (list.length == 18){
+        searchDiv = document.getElementById('topDiv');
+        searchDiv.style.display = "none";
+
+        var cont = document.querySelector('.container')
+        var div = document.createElement("div");
+        div.className = "progress";
+        cont.appendChild(div)
+
         $.ajax({ url: '/data'
             , type: 'POST'
             , data: {list: list}
@@ -545,14 +553,9 @@ class Progress {
         console.log("Something went wrong!");
         });
 
-      searchDiv = document.getElementById('topDiv');
-      searchDiv.style.display = "none";
+      
 
 
-      var cont = document.querySelector('.container')
-      var div = document.createElement("div");
-      div.className = "progress";
-      cont.appendChild(div)
       
       let pb = new Progress(0, 0, 100, {parent : ".progress"});
 
