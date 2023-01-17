@@ -6,7 +6,7 @@ var urllib = require('urllib');
 var JSSoup = require('jssoup').default;
 const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 
 const app = express();
