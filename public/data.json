@@ -42,7 +42,35 @@
 
         ["Oddevold", "https://tabellen.se/fotboll/division-1-sodra", "SportOther"],
 
-        ["Brynäs", "https://tabellen.se/hockey/shl", "SportOther"]
+        ["Brynäs", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Växjö", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Skellefteå", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Färjestad", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Frölunda", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Örebro HK", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Rögle", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Timrå", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Leksand", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Oskarshamn", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Linköping", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Luleå", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["HV 71", "https://tabellen.se/hockey/shl", "SportOther"],
+        ["Malmö", "https://tabellen.se/hockey/shl", "SportOther"],
+
+        ["Modo", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Björklöven", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Mora", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Södertälje", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Djurgården", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Karlskoga", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Almtuna", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["AIK", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Västerås", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Kristianstad", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Tingsryd", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Östersund", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Vita Hästen", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Västervik", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"]
     ],
     "leagues": [
         ["Premier League", "https://tabellen.se/fotboll/premier-league", "InterFootball"],
@@ -67,7 +95,10 @@
         ["Hockeyallsvenskan", "https://tabellen.se/hockey/hockeyallsvenskan", "Hockey"],
         ["SDHL", "https://tabellen.se/hockey/sdhl", "Hockey"],
         
-        ["Formel 1", "https://www.skysports.com/f1/standings", "Racing"]
+        ["Formel 1", "https://www.skysports.com/f1/standings", "Racing"],
+
+        ["Handbollsligan", "https://tabellen.se/handboll/handbollsligan", "InterFootball"],
+        ["SHE", "https://tabellen.se/handboll/she", "InterFootball"]
     ],
     "country": [
         ["Sverige"],

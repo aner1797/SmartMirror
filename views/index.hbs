@@ -299,7 +299,7 @@ function settings() {
 
 
               if(count < 4){
-                if(!document.getElementById("cart").innerText.includes(e.target.innerText)){
+                if(!document.getElementById("cart").innerHTML.includes(">" + e.target.innerText + "<")){
                     counter.innerText = (count+1) + " av 4"
                     var li = document.createElement("li");
                     var img = document.createElement("img");
@@ -333,7 +333,7 @@ function settings() {
 
 
               if(count < 5){
-                if(!document.getElementById("cart").innerText.includes(e.target.innerText)){
+                if(!document.getElementById("cart").innerHTML.includes(">" + e.target.innerText + "<")){
                     counter.innerText = (count+1) + " av 5"
                     var li = document.createElement("li");
                     var img = document.createElement("img");
@@ -366,7 +366,7 @@ function settings() {
 
 
               if(count < 1){
-                if(!document.getElementById("cart").innerText.includes(e.target.innerText)){
+                if(!document.getElementById("cart").innerHTML.includes(">" + e.target.innerText + "<")){
                     counter.innerText = (count+1) + " av 1"
                     var li = document.createElement("li");
                     var img = document.createElement("img");
@@ -399,7 +399,7 @@ function settings() {
 
 
               if(count < 4){
-                if(!document.getElementById("cart").innerText.includes(e.target.innerText)){
+                if(!document.getElementById("cart").innerHTML.includes(">" + e.target.innerText + "<")){
                     counter.innerText = (count+1) + " av 4"
                     var li = document.createElement("li");
                     var img = document.createElement("img");
@@ -432,7 +432,7 @@ function settings() {
 
 
               if(count < 4){
-                if(!document.getElementById("cart").innerText.includes(e.target.innerText)){
+                if(!document.getElementById("cart").innerHTML.includes(">" + e.target.innerText + "<")){
                     counter.innerText = (count+1) + " av 4"
                     var li = document.createElement("li");
                     var img = document.createElement("img");
@@ -529,7 +529,7 @@ class Progress {
 <script>
   //GET Cache DATA
   var stored = localStorage['myData'];
-  if(stored){
+  if(false){
     list = JSON.parse(stored);
 
     if (list.length == 18){
