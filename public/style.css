@@ -73,7 +73,7 @@ li{
 
 #topDiv{
   width: 100%;
-  display: flex;
+  display: none;
 }
 
 #search{
@@ -283,7 +283,7 @@ li{
 
   #topDiv{
     width: 100%;
-    display: flex;
+    display: none;
     /* flex-direction: column; */
     flex-wrap: wrap;
   }
