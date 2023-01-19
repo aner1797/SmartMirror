@@ -529,7 +529,7 @@ class Progress {
 <script>
   //GET Cache DATA
   var stored = localStorage['myData'];
-  if(stored){
+  if(false){
     list = JSON.parse(stored);
 
     if (list.length == 18){
@@ -566,7 +566,7 @@ class Progress {
       }, 60000)
     }
   }else{
-    searchDiv = document.getElementById('topDiv');
+    var searchDiv = document.getElementById('topDiv');
     searchDiv.style.display = "flex";
   }
 </script>
