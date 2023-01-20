@@ -217,7 +217,7 @@ async function getInterFootballTeam(url){
     }
   }
 
-  if(match["name"] = ""){
+  if(!match["name"]){
     match["name"] = "Inget event just nu!"
   }
 
@@ -279,7 +279,7 @@ async function getOtherTeam(url, team){
     
   }
 
-  if(match["name"] = ""){
+  if(!match["name"]){
     match["name"] = "Inget event just nu!"
   }
 
