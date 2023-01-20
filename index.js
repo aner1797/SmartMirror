@@ -244,16 +244,17 @@ async function getOtherTeam(url, team){
     var table = soup.find("section", {"id": "coming-matches"})
     var games = table.find("div", {"class": "area"})
     games = games.findAll("div")
-
+    
     var day = ""
     var time = ""
     var name = ""
     for (var d of games){
+
       if(d.attrs.class.includes('date')){
         day = d.text
       }
       
-      if(d.attrs.class.includes('box')){
+      if(d.attrs.class.includes('match-box')){
         name = d.find("span", {"class": "home"}).text + " - " + d.find("span", {"class": "away"}).text
         time = d.find("div", {"class": "time"}).text
       }
