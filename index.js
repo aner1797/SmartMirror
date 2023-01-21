@@ -407,7 +407,7 @@ async function getCountry(country){
               continue
             }
             if(time.split(' ')[2].includes(d1+1) || time.split(' ').includes("Idag,")){
-              if(!(new Date().getHours() > time.slice(0,2)))
+              if(!(new Date().getHours() > time.slice(0,2)) || time.slice(0,2) == "00")
                 swe.push({'time':time, 'name':s+": "+name, 'today': "1"})
               else
                 continue
@@ -466,7 +466,7 @@ async function getOtherSport(sport){
           continue
         }
         if(time.split(' ')[2].includes(d1+1) || time.split(' ').includes("Idag,")){
-          if(!(new Date().getHours() > time.slice(0,2)))
+          if(!(new Date().getHours() > time.slice(0,2)) || time.slice(0,2) == "00")
             ufc.push({'time':time, 'name':name, 'today': "1"})
           else
             continue

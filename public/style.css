@@ -176,7 +176,7 @@ li{
     text-align: center;
     text-decoration: none;
     display: none;
-    font-size: 16px;
+    font-size: 1.5vw;
     margin: 4px 2px;
     transition-duration: 0.4s;
     cursor: pointer;
@@ -200,7 +200,7 @@ li{
     text-align: center;
     text-decoration: none;
     display: none;
-    font-size: 16px;
+    font-size: 1.5vw;
     margin: 4px 2px;
     transition-duration: 0.4s;
     cursor: pointer;
@@ -355,6 +355,14 @@ li{
   }
 
   #submitBtn {
+    font-size: 3vw;
+  }
+
+  .settings {
+    font-size: 3vw;
+  }
+
+  .settings2 {
     font-size: 3vw;
   }
 
