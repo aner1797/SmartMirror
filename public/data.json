@@ -157,8 +157,8 @@
         ["Futsal"]
     ],
     "markets": [
-        ["OMXS30", "https://se.investing.com/indices/us-30"],
-        ["Dow Jones", "https://se.investing.com/indices/omx-stockholm-30"],
+        ["OMXS30", "https://se.investing.com/indices/omx-stockholm-30"],
+        ["Dow Jones", "https://se.investing.com/indices/us-30"],
         ["S&P 500", "https://se.investing.com/indices/us-spx-500"],
         ["NASDAQ", "https://se.investing.com/indices/nasdaq-composite"],
         ["DAX", "https://se.investing.com/indices/germany-30"],
