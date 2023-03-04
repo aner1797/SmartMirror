@@ -365,7 +365,11 @@ async function getMarket(name, url){
 
   if(stock != "error"){
     var soup = new JSSoup(stock);
-    var res = soup.find('span', {'data-test': 'instrument-price-change-percent'}).text.trim()
+    try {
+      var res = soup.find('span', {'data-test': 'instrument-price-change-percent'}).text.trim()
+    } catch (error) {
+      var res = "unknown"
+    }
 
     market = market + ": " + res
   }
@@ -509,13 +513,13 @@ async function getTV(){
           var time = d.find("time").attrs['dateTime']
           time = new Date(time)
           if(time.getHours() == 20 && time.getMinutes() == 0){
-            tvRes["content"].push("20.00: " + d.find("div", {"class": "_2WsKj"}).contents[1]._text.replace(/&#x27;/gi, "'"))
+            tvRes["content"].push("20.00: " + d.find("div", {"class": "_1FN79"}).contents[1]._text.replace(/&#x27;/gi, "'"))
           }
           if(time.getHours() == 21 && time.getMinutes() == 0){
-            tvRes["content"].push("21.00: " + d.find("div", {"class": "_2WsKj"}).contents[1]._text.replace(/&#x27;/gi, "'"))
+            tvRes["content"].push("21.00: " + d.find("div", {"class": "_1FN79"}).contents[1]._text.replace(/&#x27;/gi, "'"))
           }
           if(tmp.length < 2){
-            tmp.push((time.getHours() + "." + time.getMinutes() + ": " + d.find("div", {"class": "_2WsKj"}).contents[1]._text).replace(/&#x27;/gi, "'").replace(".0:", ".00:"))
+            tmp.push((time.getHours() + "." + time.getMinutes() + ": " + d.find("div", {"class": "_1FN79"}).contents[1]._text).replace(/&#x27;/gi, "'").replace(".0:", ".00:"))
           }
       }
       if(tvRes["content"].length < 1){
