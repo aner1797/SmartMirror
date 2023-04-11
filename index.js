@@ -512,13 +512,13 @@ async function getTV(){
       for (var d of data){
           var time = d.find("time").attrs['dateTime']
           time = new Date(time)
-          if(time.getHours() == 20 && time.getMinutes() == 0){
+          if(time.getHours() == 20 && time.getMinutes() == 0 && d.find("div", {"class": "_1FN79"}).contents[1]._text != undefined){
             tvRes["content"].push("20.00: " + d.find("div", {"class": "_1FN79"}).contents[1]._text.replace(/&#x27;/gi, "'"))
           }
-          if(time.getHours() == 21 && time.getMinutes() == 0){
+          if(time.getHours() == 21 && time.getMinutes() == 0 && d.find("div", {"class": "_1FN79"}).contents[1]._text != undefined){
             tvRes["content"].push("21.00: " + d.find("div", {"class": "_1FN79"}).contents[1]._text.replace(/&#x27;/gi, "'"))
           }
-          if(tmp.length < 2){
+          if(tmp.length < 2 && d.find("div", {"class": "_1FN79"}).contents[1]._text != undefined){
             tmp.push((time.getHours() + "." + time.getMinutes() + ": " + d.find("div", {"class": "_1FN79"}).contents[1]._text).replace(/&#x27;/gi, "'").replace(".0:", ".00:"))
           }
       }
