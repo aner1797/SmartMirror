@@ -253,6 +253,11 @@ li{
     font-size: 1vw;
   }
 
+  h4#updateTime {
+    position: absolute;
+    color: white;
+  }
+
 
 @media (orientation: portrait) {
 

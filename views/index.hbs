@@ -2,6 +2,8 @@
 
 <meta http-equiv="refresh" content="3600" />
 
+<h4 id="updateTime"></h4>
+
 <div id="divHeader">
     <h1 id="header">SMART-MIRROR</h1>
 </div>
@@ -89,6 +91,11 @@
 </div>
 
 <script>
+var date = new Date();
+var current_time = date.getHours()+":"+(date.getMinutes()<10?'0':'') + date.getMinutes();
+document.getElementById("updateTime").innerHTML = "Uppdaterad: " + current_time;
+
+
 function myFunctionTeam() {
     // Declare variables
     var input, filter, ul, li, a, i, txtValue;
