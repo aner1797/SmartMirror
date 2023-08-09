@@ -287,6 +287,81 @@ function settings() {
     settings.style.display = "none";
     back.style.display = "block";
 
+    var stored = localStorage['myData'];
+    if(stored){
+      list = JSON.parse(stored);
+      if (list.length == 18){
+        teams = document.getElementById("myULTeam");
+        teams = teams.getElementsByTagName('li');
+        leagues = document.getElementById("myULLeague");
+        leagues = leagues.getElementsByTagName('li')
+        countries = document.getElementById("myULCountry");
+        countries = countries.getElementsByTagName('li')
+        others = document.getElementById("myULOther");
+        others = others.getElementsByTagName('li')
+        markets = document.getElementById("myULMarket");
+        markets = markets.getElementsByTagName('li')
+        clicks = []
+        for (let i = 0; i < list.length; i++) {
+          for (let j = 0; j < teams.length; j++) {
+            if(teams[j].innerText == list[i]){
+              clicks.push(j)
+              break
+            }
+          }
+        }
+        for (let i = 0; i < list.length; i++) {
+          for (let j = 0; j < leagues.length; j++) {
+            if(leagues[j].innerText == list[i]){
+              clicks.push(j)
+              break
+            }
+          }
+        }
+        for (let i = 0; i < list.length; i++) {
+          for (let j = 0; j < countries.length; j++) {
+            if(countries[j].innerText == list[i]){
+              clicks.push(j)
+              break
+            }
+          }
+        }
+        for (let i = 0; i < list.length; i++) {
+          for (let j = 0; j < others.length; j++) {
+            if(others[j].innerText == list[i]){
+              clicks.push(j)
+              break
+            }
+          }
+        }
+        for (let i = 0; i < list.length; i++) {
+          for (let j = 0; j < markets.length; j++) {
+            if(markets[j].innerText == list[i]){
+              clicks.push(j)
+              break
+            }
+          }
+        }
+        teams[clicks[0]].click()
+        teams[clicks[1]].click()
+        teams[clicks[2]].click()
+        teams[clicks[3]].click()
+        leagues[clicks[4]].click()
+        leagues[clicks[5]].click()
+        leagues[clicks[6]].click()
+        leagues[clicks[7]].click()
+        leagues[clicks[8]].click()
+        countries[clicks[9]].click()
+        others[clicks[10]].click()
+        others[clicks[11]].click()
+        others[clicks[12]].click()
+        others[clicks[13]].click()
+        markets[clicks[14]].click()
+        markets[clicks[15]].click()
+        markets[clicks[16]].click()
+        markets[clicks[17]].click()
+      }
+    }
 }
 </script>
 
