@@ -42,7 +42,6 @@
 
         ["Oddevold", "https://tabellen.se/fotboll/division-1-sodra", "SportOther"],
 
-        ["Brynäs", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
         ["Växjö", "https://tabellen.se/hockey/shl", "SportOther"],
         ["Skellefteå", "https://tabellen.se/hockey/shl", "SportOther"],
         ["Färjestad", "https://tabellen.se/hockey/shl", "SportOther"],
@@ -56,8 +55,9 @@
         ["Luleå", "https://tabellen.se/hockey/shl", "SportOther"],
         ["HV 71", "https://tabellen.se/hockey/shl", "SportOther"],
         ["Malmö", "https://tabellen.se/hockey/shl", "SportOther"],
-
-        ["Modo", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
+        ["Modo", "https://tabellen.se/hockey/shl", "SportOther"],
+        
+        ["Brynäs", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
         ["Björklöven", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
         ["Mora", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
         ["Södertälje", "https://tabellen.se/hockey/hockeyallsvenskan", "SportOther"],
@@ -157,12 +157,12 @@
         ["Futsal"]
     ],
     "markets": [
-        ["OMXS30", "https://se.investing.com/indices/omx-stockholm-30"],
-        ["Dow Jones", "https://se.investing.com/indices/us-30"],
-        ["S&P 500", "https://se.investing.com/indices/us-spx-500"],
-        ["NASDAQ", "https://se.investing.com/indices/nasdaq-composite"],
-        ["DAX", "https://se.investing.com/indices/germany-30"],
-        ["Shanghai", "https://se.investing.com/indices/shanghai-composite"],
-        ["Hang Seng", "https://se.investing.com/indices/hang-sen-40"]
+        ["OMXS30", "https://markets.ft.com/data/indices/tearsheet/summary?s=OMX30:STO"],
+        ["Dow Jones", "https://markets.ft.com/data/indices/tearsheet/summary?s=DJI:DJI"],
+        ["S&P 500", "https://markets.ft.com/data/indices/tearsheet/summary?s=INX:IOM"],
+        ["NASDAQ", "https://markets.ft.com/data/indices/tearsheet/summary?s=IXIC:NAS"],
+        ["DAX", "https://markets.ft.com/data/indices/tearsheet/summary?s=DAX:GER"],
+        ["Nikkei", "https://markets.ft.com/data/indices/tearsheet/summary?s=n225:NIK"],
+        ["Hang Seng", "https://markets.ft.com/data/indices/tearsheet/summary?s=HSI:HKG"]
     ]
 }

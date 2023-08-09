@@ -34,7 +34,8 @@ app.use(cookieParser());
 app.get("/", async (req, res) => {
   const jsonData = require("./public/data.json")
 
-  if(req.session.userid){
+  /* if(req.session.userid){ */
+  if(true){
     res.render("index.hbs", jsonData)
     res.status(200)
   }else{
@@ -78,7 +79,8 @@ app.get("/login", async (req, res) => {
 
 app.post("/data", async (req, res) => {
   
-  if(req.session.userid){
+  /* if(req.session.userid){ */
+  if(true){
 
     const jsonData = require("./public/data.json")
     var list = req.body.list
@@ -366,7 +368,7 @@ async function getMarket(name, url){
   if(stock != "error"){
     var soup = new JSSoup(stock);
     try {
-      var res = soup.find('span', {'data-test': 'instrument-price-change-percent'}).text.trim()
+      var res = soup.findAll('span', {'class': 'mod-ui-data-list__value'})[1].contents[0].contents[1]._text
     } catch (error) {
       var res = "unknown"
     }
@@ -512,14 +514,15 @@ async function getTV(){
       for (var d of data){
           var time = d.find("time").attrs['dateTime']
           time = new Date(time)
-          if(time.getHours() == 20 && time.getMinutes() == 0 && d.find("div", {"class": "_1FN79"}).contents[1]._text != undefined){
-            tvRes["content"].push("20.00: " + d.find("div", {"class": "_1FN79"}).contents[1]._text.replace(/&#x27;/gi, "'"))
+ 
+          if(time.getHours() == 20 && time.getMinutes() == 0 && d.find("div", {"class": "_1FN79"}).contents[1].contents[0]._text != undefined){
+            tvRes["content"].push("20.00: " + d.find("div", {"class": "_1FN79"}).contents[1].contents[0]._text.replace(/&#x27;/gi, "'").replace(/&amp;/gi, "&"))
           }
-          if(time.getHours() == 21 && time.getMinutes() == 0 && d.find("div", {"class": "_1FN79"}).contents[1]._text != undefined){
-            tvRes["content"].push("21.00: " + d.find("div", {"class": "_1FN79"}).contents[1]._text.replace(/&#x27;/gi, "'"))
+          if(time.getHours() == 21 && time.getMinutes() == 0 && d.find("div", {"class": "_1FN79"}).contents[1].contents[0]._text != undefined){
+            tvRes["content"].push("21.00: " + d.find("div", {"class": "_1FN79"}).contents[1].contents[0]._text.replace(/&#x27;/gi, "'").replace(/&amp;/gi, "&"))
           }
-          if(tmp.length < 2 && d.find("div", {"class": "_1FN79"}).contents[1]._text != undefined){
-            tmp.push((time.getHours() + "." + time.getMinutes() + ": " + d.find("div", {"class": "_1FN79"}).contents[1]._text).replace(/&#x27;/gi, "'").replace(".0:", ".00:"))
+          if(tmp.length < 2 && d.find("div", {"class": "_1FN79"}).contents[1].contents[0]._text != undefined){
+            tmp.push((time.getHours() + "." + time.getMinutes() + ": " + d.find("div", {"class": "_1FN79"}).contents[1].contents[0]._text).replace(/&#x27;/gi, "'").replace(/&amp;/gi, "&").replace(".0:", ".00:"))
           }
       }
       if(tvRes["content"].length < 1){
