@@ -467,12 +467,12 @@ async function getOtherSport(sport){
         var d2 = new Date().getDate()-2
         time = d.find("div", {"class": "match-time"}).text
         time = time + ' - ' + d.parent.previousElement.parent.previousElement._text
-
+        
         if(time.split(' ')[2].includes(d1) || time.split(' ')[2].includes(d2)){
           continue
         }
         if(time.split(' ')[2].includes(d1+1) || time.split(' ').includes("Idag,")){
-          if(!(new Date().getHours() > time.slice(0,2)) || time.slice(0,2) == "00")
+          if(!(new Date().getHours() > time.slice(0,2)) || time.slice(0,2) == "00" || sport == "fighting/ufc")
             ufc.push({'time':time, 'name':name, 'today': "1"})
           else
             continue
