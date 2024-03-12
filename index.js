@@ -522,7 +522,11 @@ async function getSpace(){
 
       if(title != undefined && time != ""){
         title = title.text.trim()
-        ufc.push({'time':time, 'name':title, 'today': ""})
+        if(time.includes(new Date().toLocaleString('en-US', { month: 'short' })) && time.includes(new Date().getDate())){
+          ufc.push({'time':time, 'name':title, 'today': "1"})
+        }else{
+          ufc.push({'time':time, 'name':title, 'today': ""})
+        }
 
       }else{
         ufc.push({'time':"Inget event just nu!", 'name':"", 'today': ""})
