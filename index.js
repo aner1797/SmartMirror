@@ -33,7 +33,6 @@ app.use(cookieParser());
 
 app.get("/", async (req, res) => {
   const jsonData = require("./public/data.json")
-
   /* if(req.session.userid){ */
   if(true){
     res.render("index.hbs", jsonData)
@@ -154,9 +153,16 @@ app.post("/data", async (req, res) => {
 
         for(var data of jsonData["other"]){
           if(data[0] == item){
-            var mod = {
-              other: await getOtherSport(data[0]),
-              header: data[0]
+            if(item == "Space Flight"){
+              var mod = {
+                other: await getSpace(),
+                header: data[0]
+              }
+            }else{
+              var mod = {
+                other: await getOtherSport(data[0]),
+                header: data[0]
+              }
             }
             others.push(mod)
           }
@@ -488,6 +494,44 @@ async function getOtherSport(sport){
 
   if(ufc.length == 0){
     ufc.push({'time':"Inget event just nu!", 'name':"", 'today': ""})
+  }
+
+  return ufc
+}
+
+async function getSpace(){
+  var res = await urllib.request('https://nextspaceflight.com/starship/').then(function (result) {
+  return result.data
+  }).catch(function (err) {
+  return "error"
+  })
+
+  var ufc = []
+  if(res != "error"){
+    var soup = new JSSoup(res);
+    var data = soup.findAll("div", {"class": "card"})
+    if(data.length > 0){
+      var times = data[0].findAll("div")
+      var title = data[0].find("h5")
+      var time = ""
+      for(var t of times){
+        if(t.text.includes(new Date().getFullYear())){
+          time = t.text.trim()
+        }
+      }
+
+      if(title != undefined && time != ""){
+        title = title.text.trim()
+        ufc.push({'time':time, 'name':title, 'today': ""})
+
+      }else{
+        ufc.push({'time':"Inget event just nu!", 'name':"", 'today': ""})
+      }
+
+    }else{
+      ufc.push({'time':"Inget event just nu!", 'name':"", 'today': ""})
+    }
+
   }
 
   return ufc

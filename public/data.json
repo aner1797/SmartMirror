@@ -154,7 +154,8 @@
         ["Bandy"],
         ["Amerikansk-fotboll"],
         ["Trav"],
-        ["Futsal"]
+        ["Futsal"],
+        ["Space Flight"]
     ],
     "markets": [
         ["OMXS30", "https://markets.ft.com/data/indices/tearsheet/summary?s=OMX30:STO"],
