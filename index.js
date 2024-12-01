@@ -500,7 +500,7 @@ async function getOtherSport(sport){
 }
 
 async function getSpace(){
-  var res = await urllib.request('https://nextspaceflight.com/starship/').then(function (result) {
+  var res = await urllib.request('https://rocketlaunch.org/launch-schedule/spacex/starship').then(function (result) {
   return result.data
   }).catch(function (err) {
   return "error"
@@ -509,20 +509,20 @@ async function getSpace(){
   var ufc = []
   if(res != "error"){
     var soup = new JSSoup(res);
-    var data = soup.findAll("div", {"class": "card"})
-    if(data.length > 0){
-      var times = data[0].findAll("div")
-      var title = data[0].find("h5")
-      var time = ""
-      for(var t of times){
-        if(t.text.includes(new Date().getFullYear())){
-          time = t.text.trim()
+    var data = soup.findAll("p", {"class": "font-semibold"})
+    var data2 = soup.findAll("div", {"class": "xl:block"})
+    var data2 = data2[0].findAll("div")
+    if(data.length > 0 && data[0].text.includes("Starship")){
+      var title = data[0].text
+      var time = data2[8].text
+      time = time.split(',')[0]
+      var today = false
+      
+      if(time != undefined && time != ""){
+        if(time.includes(new Date().toLocaleString('en-us', { month: 'short' }))){
+          today = true
         }
-      }
-
-      if(title != undefined && time != ""){
-        title = title.text.trim()
-        if(time.includes(new Date().toLocaleString('en-US', { month: 'short' })) && time.includes(new Date().getDate())){
+        if(today){
           ufc.push({'time':time, 'name':title, 'today': "1"})
         }else{
           ufc.push({'time':time, 'name':title, 'today': ""})
