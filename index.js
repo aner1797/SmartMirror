@@ -373,10 +373,21 @@ async function getMarket(name, url){
 
   if(stock != "error"){
     var soup = new JSSoup(stock);
-    try {
-      var res = soup.findAll('span', {'class': 'mod-ui-data-list__value'})[1].contents[0].contents[1]._text
-    } catch (error) {
-      var res = "unknown"
+    if(url.includes("indices")){
+      try {
+        var res = soup.findAll('span', {'class': 'mod-ui-data-list__value'})[1].contents[0].contents[1]._text
+      } catch (error) {
+        var res = "unknown"
+      }
+    }else{
+      try {
+        var price = soup.findAll('span', {'class': 'Noto_Sans_2xl_Sans-700-2xl'})[0].text
+        var change = soup.findAll('span', {'class': 'Noto_Sans_sm_Sans-600-sm'})[1].text
+
+        var res = price + " / " + change
+      } catch (error) {
+        var res = "unknown"
+      }
     }
 
     market = market + ": " + res

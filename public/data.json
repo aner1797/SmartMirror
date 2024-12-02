@@ -164,6 +164,7 @@
         ["NASDAQ", "https://markets.ft.com/data/indices/tearsheet/summary?s=IXIC:NAS"],
         ["DAX", "https://markets.ft.com/data/indices/tearsheet/summary?s=DAX:GER"],
         ["Nikkei", "https://markets.ft.com/data/indices/tearsheet/summary?s=n225:NIK"],
-        ["Hang Seng", "https://markets.ft.com/data/indices/tearsheet/summary?s=HSI:HKG"]
+        ["Hang Seng", "https://markets.ft.com/data/indices/tearsheet/summary?s=HSI:HKG"],
+        ["Bitcoin", "https://www.coindesk.com/price/bitcoin"]
     ]
 }
