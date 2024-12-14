@@ -191,7 +191,8 @@ app.post("/data", async (req, res) => {
   }
 });
 
-async function getInterFootballTeam(url){
+async function getInterFootballTeam(team){
+  var url = "https://www.theguardian.com/football/fixtures"
   var res = await urllib.request(url).then(function (result) {
   return result.data
   }).catch(function (err) {
@@ -207,8 +208,26 @@ async function getInterFootballTeam(url){
   }
   if(res != "error"){
     var soup = new JSSoup(res);
+    var matches = soup.findAll("tr", {"class": "football-match--fixture"})
+    for (var m of matches){
+      if(m.text.includes(team)){
+        var time = m.find("time").attrs['datetime']
+        time = new Date(time)
+        match["day"] = time.getDate() + " " + time.toLocaleString('default', { month: 'long' })
+        if(time.getDate() == new Date().getDate())
+          match["today"] = "1"
+        match["time"] = time.getHours() + ":" + time.getMinutes()
+        match["name"] = m.findAll("td")[2]
+        match["name"] = match["name"].findAll("div")
+        match["name"] = match["name"][1].text + " - " + match["name"][4].text
 
-    if(soup.find("h4", {"class": "fixres__header2"})){
+        break
+      }
+
+    }
+
+
+    /* if(soup.find("h4", {"class": "fixres__header2"})){
       var result = soup.find("h4", {"class": "fixres__header2"}).text
       match["day"] = soup.find("h4", {"class": "fixres__header2"}).text
       match["league"] = soup.find("h5", {"class": "fixres__header3"}).text
@@ -222,7 +241,7 @@ async function getInterFootballTeam(url){
       if(parseInt(match["day"].split(" ")[1]) == new Date().getDate())
         match["today"] = "1"
       match = fixChar(match)
-    }
+    } */
   }
 
   if(!match["name"]){
@@ -382,8 +401,7 @@ async function getMarket(name, url){
     }else{
       try {
         var price = soup.findAll('span', {'class': 'Noto_Sans_2xl_Sans-700-2xl'})[0].text
-        var change = soup.findAll('span', {'class': 'Noto_Sans_sm_Sans-600-sm'})[1].text
-
+        var change = soup.findAll('div', {'class': 'py-2'})[1].text.split('%')[2] + "%"
         var res = price + " / " + change
       } catch (error) {
         var res = "unknown"
