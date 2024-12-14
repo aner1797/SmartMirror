@@ -210,7 +210,7 @@ async function getInterFootballTeam(team){
     var soup = new JSSoup(res);
     var matches = soup.findAll("tr", {"class": "football-match--fixture"})
     for (var m of matches){
-      if(m.text.includes(team)){
+      if(m.text.includes(team) && !m.text.includes("Women")){
         var time = m.find("time").attrs['datetime']
         time = new Date(time)
         match["day"] = time.getDate() + " " + time.toLocaleString('default', { month: 'long' })
@@ -220,6 +220,7 @@ async function getInterFootballTeam(team){
         match["name"] = m.findAll("td")[2]
         match["name"] = match["name"].findAll("div")
         match["name"] = match["name"][1].text + " - " + match["name"][4].text
+        match["league"] = m.parent.parent.find("caption").text.split('\n')[0]
 
         break
       }
