@@ -433,7 +433,7 @@ async function getCountry(country){
 
 
       var i = 1
-      for (var d of data.slice(0,30)){
+      for (var d of data.slice(0,50)){
           d = d.parent
           var time = d.find("div", {"class": "match-time"}).attrs['content']
           var name = d.find("h3").text
