@@ -542,9 +542,14 @@ async function getSpace(){
     var data = soup.findAll("p", {"class": "font-semibold"})
     var data2 = soup.findAll("div", {"class": "xl:block"})
     var data2 = data2[0].findAll("div")
+
     if(data.length > 0 && data[0].text.includes("Starship")){
       var title = data[0].text
       var time = data2[8].text
+      var time2 = data2[6].text
+      if(time.includes("Location")){
+        time = time2
+      }
       time = time.split(',')[0]
       var today = false
       
