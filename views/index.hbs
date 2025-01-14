@@ -624,7 +624,7 @@ class Progress {
         div.className = "progress";
         cont.appendChild(div)
 
-        $.ajax({ url: '/data'
+        /*$.ajax({ url: '/data'
             , type: 'POST'
             , data: {list: list}
             }).done(function(data) {
@@ -634,7 +634,7 @@ class Progress {
         })
         .fail(function() {
         console.log("Something went wrong!");
-        });
+        });*/
 
       
 
@@ -646,7 +646,7 @@ class Progress {
 
       setTimeout( () => {
         pb.end()
-      }, 60000)
+      }, 80000)
     }
   }else{
     var searchDiv = document.getElementById('topDiv');
