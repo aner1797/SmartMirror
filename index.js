@@ -432,16 +432,16 @@ async function getCountry(country){
       //var data = soup.findAll("div", {"itemtype": "http://schema.org/Event"})
       var data = soup.findAll("div", {"class": "match-detail"})
 
-
       var i = 1
       for (var d of data.slice(0,50)){
+          var name = d.find("h3").text
           d = d.parent
           var time = d.find("div", {"class": "match-time"}).attrs['content']
-          var name = d.find("h3").text
           
           if(name.toLowerCase().includes(country.toLowerCase())){
             var d1 = new Date().getDate()-1
             var d2 = new Date().getDate()-2
+            //console.log(new Date(time).getDate())
             time = d.find("div", {"class": "match-time"}).text
             time = time + ' - ' + d.parent.previousElement.parent.previousElement._text
 
@@ -496,9 +496,9 @@ async function getOtherSport(sport){
 
     var i = 1
     for (var d of data){
+        var name = d.find("h3").text
         d = d.parent
         var time = d.find("div", {"class": "match-time"}).attrs['content']
-        var name = d.find("h3").text
         var d1 = new Date().getDate()-1
         var d2 = new Date().getDate()-2
         time = d.find("div", {"class": "match-time"}).text
