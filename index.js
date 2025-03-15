@@ -401,9 +401,8 @@ async function getMarket(name, url){
       }
     }else{
       try {
-        var price = soup.findAll('span', {'class': 'Noto_Sans_2xl_Sans-700-2xl'})[0].text
-        var change = soup.findAll('div', {'class': 'py-2'})[1].text.split('%')[2] + "%"
-        var res = price + " / " + change
+        var price = soup.find('div', {'class': 'text-4xl'}).contents[2]._text.split('.')[0].replace(',',' ')
+        var res = price + " USD"
       } catch (error) {
         var res = "unknown"
       }
