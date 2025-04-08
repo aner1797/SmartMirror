@@ -208,19 +208,18 @@ async function getInterFootballTeam(team){
   }
   if(res != "error"){
     var soup = new JSSoup(res);
-    var matches = soup.findAll("tr", {"class": "football-match--fixture"})
+    var matches = soup.findAll("li", {"class": "dcr-18n74t4"})
     for (var m of matches){
       if(m.text.includes(team) && !m.text.includes("Women")){
-        var time = m.find("time").attrs['datetime']
+        var time = m.find("time").attrs.dateTime
         time = new Date(time)
-        match["day"] = time.getDate() + " " + time.toLocaleString('default', { month: 'long' })
+        match["day"] = time.getDate() + " " + time.toLocaleString('default', { month: 'long', weekday: "long" })
         if(time.getDate() == new Date().getDate())
           match["today"] = "1"
         match["time"] = time.getHours() + ":" + time.getMinutes()
-        match["name"] = m.findAll("td")[2]
-        match["name"] = match["name"].findAll("div")
-        match["name"] = match["name"][1].text + " - " + match["name"][4].text
-        match["league"] = m.parent.parent.find("caption").text.split('\n')[0]
+        match["name"] = m.findAll("div")
+        
+        match["name"] = match["name"][0].text + " - " + match["name"][2].text
 
         break
       }
