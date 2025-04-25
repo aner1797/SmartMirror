@@ -400,8 +400,8 @@ async function getMarket(name, url){
       }
     }else{
       try {
-        var price = soup.find('div', {'class': 'text-4xl'}).contents[2]._text.split('.')[0].replace(',',' ')
-        var res = price + " USD"
+        var price = soup.find('div', {'class': 'whitespace-nowrap'}).text.replace("BTC","")
+        var res = price
       } catch (error) {
         var res = "unknown"
       }
