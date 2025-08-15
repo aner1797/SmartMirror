@@ -1,23 +1,15 @@
-<div class="row">
-    {{#each teams}}
-        <div id="box" {{#if this.today}}style="border: thick dashed red;"{{/if}}>
-            <h2 id="title">{{this.header}}</h2>
-            <h4 id="title">NÄSTA MATCH</h4>
-            {{this.name}}<br>
-            {{this.day}}<br>
-            {{this.time}}<br>
-            {{this.league}}
-        </div>
-    {{/each}}
-
-        <div id="box" {{#if country.country.[0].today}}style="border: thick dashed red;"{{/if}}>
-            <h2 id="title">{{country.header}}</h2>
-            <h4 id="title">NÄSTA MATCH</h4>
-            {{#each country.country}}
+    <div class="row">
+        {{#each teams}}
+            <div id="box" {{#if this.today}}style="border: thick dashed red;"{{/if}}>
+                <h2 id="title">{{this.header}}</h2>
+                <h4 id="title">NÄSTA MATCH</h4>
+                {{this.name}}<br>
+                {{this.day}}<br>
                 {{this.time}}<br>
-                <u>{{this.name}}</u><br>
-            {{/each}}
-        </div>
+                {{this.league}}
+            </div>
+        {{/each}}
+
     </div>
 
     <div class="row">

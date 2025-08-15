@@ -86,7 +86,6 @@ app.post("/data", async (req, res) => {
     var teams = []
     var others = []
     var leagues = []
-    var country = {}
     var markets = []
 
     if(list.length == 18){
@@ -141,16 +140,6 @@ app.post("/data", async (req, res) => {
           }
         }
 
-        for(var data of jsonData["country"]){
-          if(data[0] == item){
-            var mod = {
-              country: await getCountry(data[0]),
-              header: data[0]
-            }
-            country = mod
-          }
-        }
-
         for(var data of jsonData["other"]){
           if(data[0] == item){
             if(item == "Space Flight"){
@@ -160,7 +149,7 @@ app.post("/data", async (req, res) => {
               }
             }else{
               var mod = {
-                other: await getOtherSport(data[0]),
+                other: await getOtherSport(data[1]),
                 header: data[0]
               }
             }
@@ -180,7 +169,6 @@ app.post("/data", async (req, res) => {
       teams: teams,
       leagues: leagues,
       others: others,
-      country: country,
       markets: markets,
       tv: await getTV(),
     } 
@@ -414,73 +402,8 @@ async function getMarket(name, url){
   return market
 }
 
-async function getCountry(country){
-  var sports = ["Fotboll","Ishockey","Skidor","Handboll","Friidrott","Innebandy"]
-  var result = []
-  for (var s of sports){
-    var res = await urllib.request('https://www.tvmatchen.nu/'+s+'/').then(function (result) {
-    return result.data
-    }).catch(function (err) {
-    return "error"
-    })
-
-    var swe = []
-    if(res != "error"){
-      var soup = new JSSoup(res);
-      //var data = soup.findAll("div", {"itemtype": "http://schema.org/Event"})
-      var data = soup.findAll("div", {"class": "match-detail"})
-
-      var i = 1
-      for (var d of data.slice(0,50)){
-          var name = d.find("h3").text
-          d = d.parent
-          var time = d.find("div", {"class": "match-time"}).attrs['content']
-          
-          if(name.toLowerCase().includes(country.toLowerCase())){
-            var d1 = new Date().getDate()-1
-            var d2 = new Date().getDate()-2
-            //console.log(new Date(time).getDate())
-            time = d.find("div", {"class": "match-time"}).text
-            time = time + ' - ' + d.parent.previousElement.parent.previousElement._text
-
-            if(time.split(' ')[2].includes(d1) || time.split(' ')[2].includes(d2)){
-              continue
-            }
-            if(time.split(' ')[2].includes(d1+1) || time.split(' ').includes("Idag,")){
-              if(!(new Date().getHours() > time.slice(0,2)) || time.slice(0,2) == "00")
-                swe.push({'time':time, 'name':s+": "+name, 'today': "1"})
-              else
-                continue
-            }else{
-              swe.push({'time':time, 'name':s+": "+name, 'today': ""})
-            }
-          }else{
-            continue
-          }
-
-          if (i > 1)
-              break
-          i += 1
-      }
-    }
-    result = result.concat(swe)
-    if(result.length > 1)
-      break
-  }
-
-  if(result.length == 0){
-    result.push({'time':"Inget event just nu!", 'name':"", 'today': ""})
-  }
-
-  return result.slice(0,2)
-}
-
 async function getOtherSport(sport){
-  if(sport == "UFC")
-    sport = "fighting/ufc"
-  if(sport == "Formel 1 Race")
-    sport = "motorsport/f1"
-  var res = await urllib.request('https://www.tvmatchen.nu/'+sport+'/').then(function (result) {
+  var res = await urllib.request('https://www.thesportsdb.com/league/'+sport+'/').then(function (result) {
   return result.data
   }).catch(function (err) {
   return "error"
@@ -489,35 +412,22 @@ async function getOtherSport(sport){
   var ufc = []
   if(res != "error"){
     var soup = new JSSoup(res);
-    var data = soup.findAll("div", {"class": "match-detail"})
-    
+    var data = soup.find("table")
+    var data = data.findAll("tr")
+    data = data[1].text.split(" ")
+    var day = data[1]
+    var month = data[2]
+    var name = data.slice(3).join(" ")
 
-    var i = 1
-    for (var d of data){
-        var name = d.find("h3").text
-        d = d.parent
-        var time = d.find("div", {"class": "match-time"}).attrs['content']
-        var d1 = new Date().getDate()-1
-        var d2 = new Date().getDate()-2
-        time = d.find("div", {"class": "match-time"}).text
-        time = time + ' - ' + d.parent.previousElement.parent.previousElement._text
-        
-        if(time.split(' ')[2].includes(d1) || time.split(' ')[2].includes(d2)){
-          continue
-        }
-        if(time.split(' ')[2].includes(d1+1) || time.split(' ').includes("Idag,")){
-          if(!(new Date().getHours() > time.slice(0,2)) || time.slice(0,2) == "00" || sport == "fighting/ufc")
-            ufc.push({'time':time, 'name':name, 'today': "1"})
-          else
-            continue
-        }else{
-          ufc.push({'time':time, 'name':name, 'today': ""})
-        }
+    var today = new Date().getDate()
 
-        if (i > 1)
-            break
-        i += 1
+    if(day == today){
+      ufc.push({'time':day+" "+month, 'name':name, 'today': "1"})
+    }else{
+      ufc.push({'time':day+" "+month, 'name':name, 'today': ""})
     }
+
+    
   }
 
   if(ufc.length == 0){
