@@ -7,6 +7,8 @@ var JSSoup = require('jssoup').default;
 const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
 const bcrypt = require('bcryptjs');
+const fetch = require("node-fetch");
+require('dotenv').config();
 
 
 const app = express();
@@ -18,6 +20,14 @@ app.use(express.json());
 
 // creating 24 hours from milliseconds.... 10 days
 const oneDay = 1000 * 60 * 60 * 24 * 10;
+
+
+const tmdbApiKey = process.env.TMDB_API_KEY;
+if (!tmdbApiKey) {
+    console.error("TMDB_API_KEY är inte konfigurerad i .env-filen.");
+    process.exit(1);
+}
+
 
 //session middleware
 app.use(sessions({
@@ -171,7 +181,9 @@ app.post("/data", async (req, res) => {
       others: others,
       markets: markets,
       tv: await getTV(),
-    } 
+      popularMovies: await getPopularMovies(),
+      upcomingMovies: await getUpcomingMovies(),
+    }
 
     res.render("data.hbs", model)
     res.status(200)
@@ -563,7 +575,65 @@ async function getTV(){
   return result
 }
 
+async function getPopularMovies() {
+  const url = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${tmdbApiKey}`
+    }
+  };
 
+  let result = [];
+  try {
+    const res = await fetch(url, options);
+    const data = await res.json();
+    if (data.results && data.results.length > 0) {
+      for (let i = 0; i < 5 && i < data.results.length; i++) {
+        result.push({
+          title: data.results[i].title,
+          date: data.results[i].release_date
+        });
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return result;
+}
+
+async function getUpcomingMovies() {
+  const today = new Date().toISOString().slice(0, 10);
+
+  const url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&primary_release_date.gte=' + today + '&sort_by=popularity.desc';
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${tmdbApiKey}`
+    }
+  };
+
+  let result = [];
+  try {
+    const res = await fetch(url, options);
+    const data = await res.json();
+    if (data.results && data.results.length > 0) {
+      for (let i = 0; i < 3 && i < data.results.length; i++) {
+        result.push({
+          title: data.results[i].title,
+          date: data.results[i].release_date
+        });
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return result;
+}
 
 async function fixChar(data){
   for (const [key, value] of Object.entries(data)) {

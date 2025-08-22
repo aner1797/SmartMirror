@@ -55,6 +55,21 @@
             {{/each}}
         </div>
 
+        <div id="box" style="border: thick dashed red;">
+            <h2 id="title" style="font-size: 1.0vw; margin-bottom: 0.2vw; margin-top: 0;">POPULÄRA FILMER</h2>
+            {{#each popularMovies}}
+                <h4 id="title" style="margin-bottom: 0; margin-top: 0.4vw; color: #ffffff; font-size: 0.9vw;">{{this.title}}</h4>
+                {{!-- <p style="margin-bottom: 0; margin-top: 0.1vw; font-size: 0.8vw;">Release: {{this.date}}</p> --}}
+            {{/each}}
+            <p style="margin-bottom: -0.5vw; margin-top: -0.5vw; color: red; font-size: 2.1vw;">-------------</p>
+            <h2 id="title" style="font-size: 1.0vw; margin-bottom: 0.2vw; margin-top: 0.4vw;">KOMMANDE FILMER</h2>
+            {{#each upcomingMovies}}
+                <h4 id="title" style="margin-bottom: 0; margin-top: 0.4vw; color: #ffffff; font-size: 0.9vw;">{{this.title}}</h4>
+                <p style="margin-bottom: 0; margin-top: 0.1vw; font-size: 0.8vw; color: #ffffff;">Release: {{this.date}}</p>
+            {{/each}}
+
+        </div>
+
     </div>
 
 
