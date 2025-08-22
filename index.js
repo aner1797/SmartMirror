@@ -576,7 +576,12 @@ async function getTV(){
 }
 
 async function getPopularMovies() {
-  const url = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
+  const today = new Date().toISOString().slice(0, 10);
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+  const threeMonthsAgoStr = threeMonthsAgo.toISOString().slice(0, 10);
+
+  const url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&primary_release_date.gte=' + threeMonthsAgoStr + '&primary_release_date.lte=' + today + '&sort_by=popularity.desc&vote_count.gte=800';
   const options = {
     method: 'GET',
     headers: {
