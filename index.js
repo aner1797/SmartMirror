@@ -578,10 +578,10 @@ async function getTV(){
 async function getPopularMovies() {
   const today = new Date().toISOString().slice(0, 10);
   const threeMonthsAgo = new Date();
-  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 2);
   const threeMonthsAgoStr = threeMonthsAgo.toISOString().slice(0, 10);
 
-  const url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&primary_release_date.gte=' + threeMonthsAgoStr + '&primary_release_date.lte=' + today + '&sort_by=popularity.desc&vote_count.gte=800';
+  const url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&primary_release_date.gte=' + threeMonthsAgoStr + '&primary_release_date.lte=' + today + '&sort_by=popularity.desc&vote_count.gte=500';
   const options = {
     method: 'GET',
     headers: {
@@ -626,7 +626,7 @@ async function getUpcomingMovies() {
     const res = await fetch(url, options);
     const data = await res.json();
     if (data.results && data.results.length > 0) {
-      for (let i = 0; i < 3 && i < data.results.length; i++) {
+      for (let i = 0; i < 4 && i < data.results.length; i++) {
         result.push({
           title: data.results[i].title,
           date: data.results[i].release_date
