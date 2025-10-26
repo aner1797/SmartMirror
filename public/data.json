@@ -105,7 +105,8 @@
         ["Formel 1 Race", "4370-formula-1"],
         ["Golf", "4425-pga-tour"],
         ["Cykel", "4465-uci-world-tour"],
-        ["Space Flight"]
+        ["Space Flight"],
+        ["Winter Sport"]
     ],
     "markets": [
         ["OMXS30", "https://markets.ft.com/data/indices/tearsheet/summary?s=OMX30:STO"],

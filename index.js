@@ -157,6 +157,11 @@ app.post("/data", async (req, res) => {
                 other: await getSpace(),
                 header: data[0]
               }
+            }else if(item == "Winter Sport"){
+              var mod = {
+                other: await getWinterSport(),
+                header: data[0]
+              }
             }else{
               var mod = {
                 other: await getOtherSport(data[1]),
@@ -638,6 +643,48 @@ async function getUpcomingMovies() {
   }
 
   return result;
+}
+
+async function getWinterSport(){
+  var res = await urllib.request('https://www.tv.nu/sport/vintersport').then(function (result) {
+  return result.data
+  }).catch(function (err) {
+  return "error"
+  })
+
+  var ufc = []
+  if(res != "error"){
+    var soup = new JSSoup(res);
+    var data = soup.findAll("li", {"class": "_37xCg"})
+
+    var tmp = []
+    for (var d of data){
+        var time = d.find("time").attrs['dateTime']
+        time = new Date(time)
+
+        var day = time.getDate()
+        var month = time.getMonth() + 1
+        var name = d.find("div", {"class": "_1FN79"}).text
+
+        var today = new Date().getDate()
+
+        if(day == today){
+          ufc.push({'time':day+"/"+month+" - "+time.getHours()+":"+time.getMinutes(), 'name':name, 'today': "1"})
+        }else{
+          ufc.push({'time':day+"/"+month+" - "+time.getHours()+":"+time.getMinutes(), 'name':name, 'today': ""})
+        }
+
+        if(ufc.length > 1){
+          break
+        }
+    }
+  }
+
+  if(ufc.length == 0){
+    ufc.push({'time':"Inget event just nu!", 'name':"", 'today': ""})
+  }
+
+  return ufc
 }
 
 async function fixChar(data){
